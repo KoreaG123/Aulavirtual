@@ -2,9 +2,10 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aula Virtual | Acceso</title>
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Estilos -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,34 +20,19 @@
 
     <div class="divider">o</div>
 
-    <input 
-      type="email" 
-      id="email" 
-      placeholder="Correo electrónico" 
-      autocomplete="email"
-      required>
-    
-    <input 
-      type="password" 
-      id="password" 
-      placeholder="Contraseña" 
-      autocomplete="current-password"
-      required>
+    <input type="email" id="email" placeholder="Correo electrónico">
+    <input type="password" id="password" placeholder="Contraseña">
 
     <button id="emailLogin" class="login-btn">
       Entrar / Registrarse
     </button>
-
-    <div id="message" class="message"></div>
   </div>
 
-  Firebase SDK: Wanderley ru creador
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
-  Scpts personalizados
   <script src="js/firebase.js"></script>
   <script src="js/auth.js"></script>
-
 </body>
 </html>
