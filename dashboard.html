@@ -6,56 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="css/style.css">
-
-  <style>
-    .dashboard {
-      max-width: 800px;
-      margin: auto;
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      text-align: center;
-    }
-
-    .dashboard h1 {
-      color: #1a1464;
-      margin-bottom: 10px;
-    }
-
-    .dashboard p {
-      color: #555;
-      margin-bottom: 20px;
-    }
-
-    .user-info {
-      background: #f8f9fa;
-      padding: 16px;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .user-info strong {
-      color: #1a1464;
-    }
-
-    .logout-btn {
-      background: #dc3545;
-      color: white;
-      border: none;
-      padding: 14px 20px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .logout-btn:hover {
-      background: #b02a37;
-      transform: translateY(-2px);
-    }
-  </style>
 </head>
 <body>
 
@@ -68,7 +18,7 @@
     <p><strong>Correo:</strong> <span id="userEmail">---</span></p>
   </div>
 
-  <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+  <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
 </div>
 
 <!-- Firebase SDK -->
@@ -78,27 +28,32 @@
 <!-- Configuración Firebase -->
 <script src="js/firebase.js"></script>
 
-<!-- Protección del dashboard -->
+<!-- Lógica del dashboard -->
 <script>
-  const auth = firebase.auth();
+  document.addEventListener("DOMContentLoaded", () => {
 
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      window.location.href = "index.html";
-    } else {
+    const auth = firebase.auth();
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = "index.html";
+        return;
+      }
+
       document.getElementById("userName").textContent =
         user.displayName || "Usuario";
 
       document.getElementById("userEmail").textContent =
         user.email;
-    }
-  });
-
-  function logout() {
-    auth.signOut().then(() => {
-      window.location.href = "index.html";
     });
-  }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "index.html";
+      });
+    });
+
+  });
 </script>
 
 </body>
