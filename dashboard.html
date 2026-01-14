@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,28 +6,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    /* Estilos exclusivos del dashboard */
+    .dashboard {
+      max-width: 800px;
+      margin: auto;
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .dashboard h1 {
+      color: #1a1464;
+      margin-bottom: 10px;
+    }
+
+    .dashboard p {
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .user-info {
+      background: #f8f9fa;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .user-info strong {
+      color: #1a1464;
+    }
+
+    .logout-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #b02a37;
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
 <body>
 
-  <div class="dashboard">
-    <h1>Bienvenido al Aula Virtual</h1>
-    <p>Ya iniciaste sesión correctamente 🎉</p>
+<div class="dashboard">
 
-    <button onclick="logout()">Cerrar sesión</button>
+  <h1>📚 Aula Virtual</h1>
+  <p>Has iniciado sesión correctamente</p>
+
+  <div class="user-info">
+    <p><strong>Nombre:</strong> <span id="userName">---</span></p>
+    <p><strong>Correo:</strong> <span id="userEmail">---</span></p>
   </div>
 
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <button class="logout-btn" onclick="logout()">
+    Cerrar sesión
+  </button>
 
-  <script src="js/firebase.js"></script>
-  <script>
-    const auth = firebase.auth();
+</div>
 
-    function logout() {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      });
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script src="js/firebase.js"></script>
+
+<script>
+  // PROTECCIÓN DEL DASHBOARD
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      // No logueado → fuera
+      window.location.href = "index.html";
+    } else {
+      // Usuario activo
+      document.getElementById("userName").textContent =
+        user.displayName || "Sin nombre";
+
+      document.getElementById("userEmail").textContent =
+        user.email;
     }
-  </script>
+  });
+
+  // LOGOUT
+  function logout() {
+    auth.signOut().then(() => {
+      window.location.href = "index.html";
+    });
+  }
+</script>
+
 </body>
 </html>
