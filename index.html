@@ -15,12 +15,12 @@
     <span class="icon">🎯</span>
     <h2>Nuestra Ventaja Exclusiva</h2>
     <p>
-      Plataforma educativa moderna con acceso seguro y experiencia optimizada
+      Plataforma educativa moderna con acceso seguro
       para estudiantes y docentes.
     </p>
   </div>
 
-  <!-- Tarjeta de autenticación -->
+  <!-- Tarjeta -->
   <div class="auth-card">
 
     <div class="form-header">
@@ -33,12 +33,26 @@
 
       <div class="input-group">
         <label>Correo electrónico</label>
-        <input type="email" id="loginUsername" placeholder="correo@ejemplo.com">
+        <input
+          type="email"
+          id="loginUsername"
+          placeholder="correo@ejemplo.com"
+          required
+        >
       </div>
 
       <div class="input-group">
         <label>Contraseña</label>
-        <input type="password" id="loginPassword" placeholder="••••••••">
+
+        <div class="password-box">
+          <input
+            type="password"
+            id="loginPassword"
+            placeholder="Contraseña"
+            required
+          >
+          <span class="toggle-password" onclick="togglePassword()">👁️</span>
+        </div>
       </div>
 
       <button id="loginBtn" class="primary-btn">
@@ -48,7 +62,10 @@
       <!-- Google -->
       <div class="google-login">
         <button id="googleBtn" class="google-btn">
-          <img class="google-icon" src="https://www.svgrepo.com/show/475656/google-color.svg">
+          <img
+            class="google-icon"
+            src="https://www.svgrepo.com/show/475656/google-color.svg"
+          >
           <span>Continuar con Google</span>
         </button>
       </div>
@@ -97,12 +114,20 @@
   </div>
 </div>
 
-<!-- Firebase -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script src="js/firebase.js"></script>
 <script src="js/auth.js"></script>
+
+<!-- Mostrar / ocultar contraseña -->
+<script>
+  function togglePassword() {
+    const input = document.getElementById("loginPassword");
+    input.type = input.type === "password" ? "text" : "password";
+  }
+</script>
 
 </body>
 </html>
