@@ -1,3 +1,4 @@
+// ===== REFERENCIAS DOM =====
 const loginForm = document.getElementById('loginForm');
 const registerForm = document.getElementById('registerForm');
 const messageDiv = document.getElementById('message');
@@ -13,7 +14,7 @@ const registerPassword = document.getElementById('registerPassword');
 const registerPasswordConfirm = document.getElementById('registerPasswordConfirm');
 const registerBtn = document.getElementById('registerBtn');
 
-/* Mostrar formularios */
+// ===== MOSTRAR FORMULARIOS =====
 function showRegister() {
   loginForm.classList.remove('active');
   registerForm.classList.add('active');
@@ -26,7 +27,7 @@ function showLogin() {
   hideMessage();
 }
 
-/* Mensajes */
+// ===== MENSAJES =====
 function showMessage(text, type) {
   messageDiv.textContent = text;
   messageDiv.className = `message ${type} show`;
@@ -36,7 +37,7 @@ function hideMessage() {
   messageDiv.className = 'message';
 }
 
-/* LOGIN EMAIL */
+// ===== LOGIN EMAIL / PASSWORD =====
 loginBtn.onclick = async () => {
   if (!loginUsername.value || !loginPassword.value) {
     return showMessage('Completa todos los campos', 'error');
@@ -47,14 +48,18 @@ loginBtn.onclick = async () => {
       loginUsername.value,
       loginPassword.value
     );
+
     showMessage('Bienvenido', 'success');
-    setTimeout(() => location.href = 'dashboard.html', 1000);
-  } catch (e) {
-    showMessage('Credenciales incorrectas', 'error');
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 1000);
+
+  } catch (error) {
+    showMessage('Correo o contraseña incorrectos', 'error');
   }
 };
 
-/* REGISTRO */
+// ===== REGISTRO =====
 registerBtn.onclick = async () => {
   if (
     !registerName.value ||
@@ -70,30 +75,51 @@ registerBtn.onclick = async () => {
   }
 
   try {
-    const user = await auth.createUserWithEmailAndPassword(
+    const result = await auth.createUserWithEmailAndPassword(
       registerEmail.value,
       registerPassword.value
     );
 
-    await user.user.updateProfile({
+    await result.user.updateProfile({
       displayName: registerName.value
     });
 
     showMessage('Cuenta creada correctamente', 'success');
-    setTimeout(() => location.href = 'dashboard.html', 1000);
-  } catch (e) {
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 1000);
+
+  } catch (error) {
     showMessage('Error al crear la cuenta', 'error');
   }
 };
 
-/* GOOGLE LOGIN (PROFESIONAL) */
+// ===== LOGIN CON GOOGLE =====
 googleBtn.onclick = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
+
   try {
     await auth.signInWithPopup(provider);
     showMessage('Conectado con Google', 'success');
-    setTimeout(() => location.href = 'dashboard.html', 1000);
-  } catch {
-    showMessage('Error con Google', 'error');
+    setTimeout(() => {
+      window.location.href = 'dashboard.html';
+    }, 1000);
+
+  } catch (error) {
+    showMessage('Error al iniciar con Google', 'error');
   }
 };
+
+// ===== OLVIDÉ MI CONTRASEÑA =====
+async function resetPassword() {
+  if (!loginUsername.value) {
+    return showMessage('Ingresa tu correo primero', 'error');
+  }
+
+  try {
+    await auth.sendPasswordResetEmail(loginUsername.value);
+    showMessage('Te enviamos un correo para restablecer tu contraseña', 'success');
+  } catch (error) {
+    showMessage('Error al enviar el correo', 'error');
+  }
+}
