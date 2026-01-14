@@ -14,26 +14,3 @@ firebase.initializeApp(firebaseConfig);
 // Auth reference
 const auth = firebase.auth();
 
-
-
-<script>
-  const auth = firebase.auth();
-
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      // Si no hay sesión → regresar al login
-      window.location.href = "index.html";
-    } else {
-      // Mostrar datos del usuario
-      document.getElementById("userName").textContent =
-        user.displayName || "Usuario";
-      document.getElementById("userEmail").textContent = user.email;
-    }
-  });
-
-  function logout() {
-    auth.signOut().then(() => {
-      window.location.href = "index.html";
-    });
-  }
-</script>
