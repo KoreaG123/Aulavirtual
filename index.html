@@ -43,7 +43,6 @@
 
       <div class="input-group">
         <label>Contraseña</label>
-
         <div class="password-box">
           <input
             type="password"
@@ -53,6 +52,13 @@
           >
           <span class="toggle-password" onclick="togglePassword()">👁️</span>
         </div>
+      </div>
+
+      <!-- OLVIDÉ CONTRASEÑA -->
+      <div class="forgot-password">
+        <a href="#" onclick="resetPassword(); return false;">
+          ¿Olvidaste tu contraseña?
+        </a>
       </div>
 
       <button id="loginBtn" class="primary-btn">
@@ -109,6 +115,7 @@
       </div>
     </div>
 
+    <!-- MENSAJES -->
     <div id="message" class="message"></div>
 
   </div>
@@ -118,7 +125,10 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
+<!-- Firebase config -->
 <script src="js/firebase.js"></script>
+
+<!-- Auth -->
 <script src="js/auth.js"></script>
 
 <!-- Mostrar / ocultar contraseña -->
