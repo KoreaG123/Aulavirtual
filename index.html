@@ -8,134 +8,101 @@
 </head>
 <body>
 
-  <div class="container">
-    <!-- Header con mensaje -->
-    <div class="header-message">
-      <span class="icon">🎯</span>
-      <h2>Nuestra Ventaja Exclusiva:</h2>
-      <p>Contamos con servicios exclusivos diseñados para ofrecerte interacciones más auténticas y relevantes en esta región, complementando nuestra amplia gama de servicios educativos.</p>
-    </div>
+<div class="container">
 
-    <!-- Formulario de Login -->
-    <div class="auth-card">
-      <div class="form-header">
-        <h1>📚 Aula Virtual</h1>
-        <p class="subtitle">Plataforma educativa online</p>
-      </div>
-
-      <!-- Login Form -->
-      <div id="loginForm" class="form-section active">
-        <div class="input-group">
-          <label for="loginUsername">Nombre de usuario</label>
-          <input 
-            type="text" 
-            id="loginUsername" 
-            placeholder="usuario@email.com"
-            autocomplete="username">
-        </div>
-
-        <div class="input-group">
-          <label for="loginPassword">Contraseña</label>
-          <input 
-            type="password" 
-            id="loginPassword" 
-            placeholder="••••••••"
-            autocomplete="current-password">
-        </div>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="rememberMe">
-          <label for="rememberMe">Recordar cuenta</label>
-        </div>
-
-        <a href="#" class="forgot-link">¿Ha olvidado su contraseña?</a>
-
-        <button id="loginBtn" class="primary-btn">
-          Iniciar sesión
-        </button>
-
-        <!-- Login con Google -->
-        <div class="google-login">
-          <button id="googleBtn" class="google-btn">
-            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%234285F4' d='M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z'/%3E%3Cpath fill='%2334A853' d='M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z'/%3E%3Cpath fill='%23FBBC05' d='M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24c0 3.55.85 6.91 2.34 9.88l7.35-5.7z'/%3E%3Cpath fill='%23EA4335' d='M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z'/%3E%3C/svg%3E" alt="Google" class="google-icon">
-            <span>Inicia sesión como Crespoo</span>
-            <span class="google-email">sitiodewanderley@gmail.com</span>
-          </button>
-        </div>
-
-        <div class="register-link">
-          ¿No tiene una cuenta? <a href="#" onclick="showRegister(); return false;">Registrarse</a>
-        </div>
-      </div>
-
-      <!-- Register Form -->
-      <div id="registerForm" class="form-section">
-        <div class="input-group">
-          <label for="registerName">Nombre completo</label>
-          <input 
-            type="text" 
-            id="registerName" 
-            placeholder="Juan Pérez"
-            autocomplete="name">
-        </div>
-
-        <div class="input-group">
-          <label for="registerEmail">Correo electrónico</label>
-          <input 
-            type="email" 
-            id="registerEmail" 
-            placeholder="tu@email.com"
-            autocomplete="email">
-        </div>
-
-        <div class="input-group">
-          <label for="registerPassword">Contraseña</label>
-          <input 
-            type="password" 
-            id="registerPassword" 
-            placeholder="Mínimo 6 caracteres"
-            autocomplete="new-password">
-        </div>
-
-        <div class="input-group">
-          <label for="registerPasswordConfirm">Confirmar contraseña</label>
-          <input 
-            type="password" 
-            id="registerPasswordConfirm" 
-            placeholder="Repite tu contraseña"
-            autocomplete="new-password">
-        </div>
-
-        <button id="registerBtn" class="primary-btn register">
-          Crear cuenta
-        </button>
-
-        <div class="register-link">
-          ¿Ya tienes cuenta? <a href="#" onclick="showLogin(); return false;">Inicia sesión</a>
-        </div>
-      </div>
-
-      <!-- Mensaje de feedback -->
-      <div id="message" class="message"></div>
-    </div>
-
-    <!-- Botones flotantes -->
-    <div class="floating-buttons">
-      <button class="float-btn notification">🔔</button>
-      <button class="float-btn whatsapp">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="white">
-          <path d="M16 0C7.164 0 0 7.164 0 16c0 2.824.736 5.488 2.032 7.82L0 32l8.36-2.016A15.934 15.934 0 0016 32c8.836 0 16-7.164 16-16S24.836 0 16 0zm0 29.2c-2.456 0-4.78-.68-6.78-1.908l-.488-.292-5.044 1.216 1.244-4.928-.324-.512A13.148 13.148 0 012.8 16C2.8 8.712 8.712 2.8 16 2.8S29.2 8.712 29.2 16 23.288 29.2 16 29.2zm7.228-9.88c-.396-.196-2.34-1.152-2.704-1.284-.364-.132-.628-.196-.892.196-.264.396-1.024 1.284-1.256 1.548-.232.264-.464.296-.86.1-.396-.196-1.672-.616-3.184-1.964-1.176-1.048-1.972-2.344-2.204-2.74-.232-.396-.024-.608.172-.808.176-.176.396-.464.596-.696.2-.232.264-.396.396-.66.132-.264.068-.496-.032-.696-.1-.196-.892-2.144-1.224-2.936-.324-.772-.652-.668-.892-.68-.232-.012-.496-.016-.76-.016s-.696.1-1.06.496c-.364.396-1.388 1.356-1.388 3.304s1.42 3.832 1.62 4.096c.196.264 2.824 4.312 6.84 6.048.956.412 1.704.66 2.288.844.96.304 1.836.26 2.528.156.772-.116 2.34-.956 2.668-1.88.328-.924.328-1.716.232-1.88-.1-.164-.364-.264-.76-.46z"/>
-        </svg>
-      </button>
-    </div>
+  <!-- Mensaje superior -->
+  <div class="header-message">
+    <span class="icon">🎯</span>
+    <h2>Nuestra Ventaja Exclusiva</h2>
+    <p>
+      Plataforma educativa moderna con acceso seguro y experiencia optimizada
+      para estudiantes y docentes.
+    </p>
   </div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  
-  <script src="js/firebase.js"></script>
-  <script src="js/auth.js"></script>
+  <!-- Tarjeta de autenticación -->
+  <div class="auth-card">
+
+    <div class="form-header">
+      <h1>📚 Aula Virtual</h1>
+      <p class="subtitle">Plataforma educativa online</p>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginForm" class="form-section active">
+
+      <div class="input-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="loginUsername" placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" id="loginPassword" placeholder="••••••••">
+      </div>
+
+      <button id="loginBtn" class="primary-btn">
+        Iniciar sesión
+      </button>
+
+      <!-- Google -->
+      <div class="google-login">
+        <button id="googleBtn" class="google-btn">
+          <img class="google-icon" src="https://www.svgrepo.com/show/475656/google-color.svg">
+          <span>Continuar con Google</span>
+        </button>
+      </div>
+
+      <div class="register-link">
+        ¿No tienes cuenta?
+        <a href="#" onclick="showRegister(); return false;">Registrarse</a>
+      </div>
+    </div>
+
+    <!-- REGISTRO -->
+    <div id="registerForm" class="form-section">
+
+      <div class="input-group">
+        <label>Nombre completo</label>
+        <input type="text" id="registerName" placeholder="Juan Pérez">
+      </div>
+
+      <div class="input-group">
+        <label>Correo electrónico</label>
+        <input type="email" id="registerEmail" placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres">
+      </div>
+
+      <div class="input-group">
+        <label>Confirmar contraseña</label>
+        <input type="password" id="registerPasswordConfirm">
+      </div>
+
+      <button id="registerBtn" class="primary-btn register">
+        Crear cuenta
+      </button>
+
+      <div class="register-link">
+        ¿Ya tienes cuenta?
+        <a href="#" onclick="showLogin(); return false;">Iniciar sesión</a>
+      </div>
+    </div>
+
+    <div id="message" class="message"></div>
+
+  </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script src="js/firebase.js"></script>
+<script src="js/auth.js"></script>
 
 </body>
 </html>
