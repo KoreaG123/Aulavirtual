@@ -1,36 +1,49 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
   background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.auth-container, .dashboard {
+.auth-container {
   background: white;
-  padding: 30px;
+  padding: 40px;
   width: 100%;
-  max-width: 360px;
-  border-radius: 12px;
+  max-width: 400px;
+  border-radius: 14px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   text-align: center;
 }
 
-h1 {
-  margin-bottom: 10px;
+.auth-container h1 {
+  margin-bottom: 5px;
+  color: #203a43;
 }
 
-p {
-  color: #555;
+.auth-container p {
+  color: #6c757d;
+  margin-bottom: 25px;
 }
 
 input {
   width: 100%;
   padding: 12px;
-  margin: 8px 0;
+  margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #203a43;
 }
 
 button {
@@ -38,22 +51,46 @@ button {
   padding: 12px;
   border-radius: 8px;
   border: none;
-  font-size: 15px;
   cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  transition: 0.3s;
 }
 
+/* Google */
+.google-btn {
+  background: #ffffff;
+  color: #444;
+  border: 2px solid #ddd;
+}
+
+.google-btn:hover {
+  background: #f1f1f1;
+}
+
+/* Facebook */
 .facebook-btn {
   background: #1877f2;
   color: white;
-  margin-bottom: 10px;
 }
 
+.facebook-btn:hover {
+  background: #145dbf;
+}
+
+/* Email */
 .login-btn {
-  background: #2c5364;
+  background: linear-gradient(135deg, #203a43, #2c5364);
   color: white;
 }
 
+.login-btn:hover {
+  opacity: 0.9;
+}
+
 .divider {
-  margin: 10px 0;
-  color: #777;
+  margin: 15px 0;
+  color: #999;
+  font-size: 14px;
 }
