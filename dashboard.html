@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="css/style.css">
 
   <style>
-    /* Estilos exclusivos del dashboard */
     .dashboard {
       max-width: 800px;
       margin: auto;
@@ -61,7 +60,6 @@
 <body>
 
 <div class="dashboard">
-
   <h1>📚 Aula Virtual</h1>
   <p>Has iniciado sesión correctamente</p>
 
@@ -70,57 +68,32 @@
     <p><strong>Correo:</strong> <span id="userEmail">---</span></p>
   </div>
 
-  <button class="logout-btn" onclick="logout()">
-    Cerrar sesión
-  </button>
-
+  <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
 </div>
 
-<!-- Firebase -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
+<!-- Configuración Firebase -->
 <script src="js/firebase.js"></script>
 
-  <script>
+<!-- Protección del dashboard -->
+<script>
   const auth = firebase.auth();
 
   auth.onAuthStateChanged((user) => {
     if (!user) {
-      // Si no hay sesión → regresar al login
       window.location.href = "index.html";
     } else {
-      // Mostrar datos del usuario
       document.getElementById("userName").textContent =
         user.displayName || "Usuario";
-      document.getElementById("userEmail").textContent = user.email;
-    }
-  });
-
-  function logout() {
-    auth.signOut().then(() => {
-      window.location.href = "index.html";
-    });
-  }
-  </script>
-
-<script>
-  // PROTECCIÓN DEL DASHBOARD
-  auth.onAuthStateChanged((user) => {
-    if (!user) {
-      // No logueado → fuera
-      window.location.href = "index.html";
-    } else {
-      // Usuario activo
-      document.getElementById("userName").textContent =
-        user.displayName || "Sin nombre";
 
       document.getElementById("userEmail").textContent =
         user.email;
     }
   });
 
-  // LOGOUT
   function logout() {
     auth.signOut().then(() => {
       window.location.href = "index.html";
