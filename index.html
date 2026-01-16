@@ -10,17 +10,12 @@
 
 <div class="container">
 
-  <!-- Mensaje superior -->
   <div class="header-message">
     <span class="icon">🎯</span>
     <h2>Nuestra Ventaja Exclusiva</h2>
-    <p>
-      Plataforma educativa moderna con acceso seguro
-      para estudiantes y docentes.
-    </p>
+    <p>Plataforma educativa moderna con acceso seguro.</p>
   </div>
 
-  <!-- Tarjeta -->
   <div class="auth-card">
 
     <div class="form-header">
@@ -33,52 +28,33 @@
 
       <div class="input-group">
         <label>Correo electrónico</label>
-        <input
-          type="email"
-          id="loginUsername"
-          placeholder="correo@ejemplo.com"
-          required
-        >
+        <input type="email" id="loginUsername" required>
       </div>
 
       <div class="input-group">
         <label>Contraseña</label>
         <div class="password-box">
-          <input
-            type="password"
-            id="loginPassword"
-            placeholder="Contraseña"
-            required
-          >
+          <input type="password" id="loginPassword" required>
           <span class="toggle-password" onclick="togglePassword()">👁️</span>
         </div>
       </div>
 
-      <!-- OLVIDÉ CONTRASEÑA -->
       <div class="forgot-password">
-        <a href="#" onclick="resetPassword(); return false;">
-          ¿Olvidaste tu contraseña?
-        </a>
+        <a href="#" onclick="resetPassword();return false;">¿Olvidaste tu contraseña?</a>
       </div>
 
-      <button id="loginBtn" class="primary-btn">
-        Iniciar sesión
-      </button>
+      <button id="loginBtn" class="primary-btn">Iniciar sesión</button>
 
-      <!-- Google -->
       <div class="google-login">
         <button id="googleBtn" class="google-btn">
-          <img
-            class="google-icon"
-            src="https://www.svgrepo.com/show/475656/google-color.svg"
-          >
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="google-icon">
           <span>Continuar con Google</span>
         </button>
       </div>
 
       <div class="register-link">
         ¿No tienes cuenta?
-        <a href="#" onclick="showRegister(); return false;">Registrarse</a>
+        <a href="#" onclick="showRegister();return false;">Registrarse</a>
       </div>
     </div>
 
@@ -87,17 +63,17 @@
 
       <div class="input-group">
         <label>Nombre completo</label>
-        <input type="text" id="registerName" placeholder="Juan Pérez">
+        <input type="text" id="registerName">
       </div>
 
       <div class="input-group">
         <label>Correo electrónico</label>
-        <input type="email" id="registerEmail" placeholder="correo@ejemplo.com">
+        <input type="email" id="registerEmail">
       </div>
 
       <div class="input-group">
         <label>Contraseña</label>
-        <input type="password" id="registerPassword" placeholder="Mínimo 6 caracteres">
+        <input type="password" id="registerPassword">
       </div>
 
       <div class="input-group">
@@ -105,17 +81,14 @@
         <input type="password" id="registerPasswordConfirm">
       </div>
 
-      <button id="registerBtn" class="primary-btn register">
-        Crear cuenta
-      </button>
+      <button id="registerBtn" class="primary-btn register">Crear cuenta</button>
 
       <div class="register-link">
         ¿Ya tienes cuenta?
-        <a href="#" onclick="showLogin(); return false;">Iniciar sesión</a>
+        <a href="#" onclick="showLogin();return false;">Iniciar sesión</a>
       </div>
     </div>
 
-    <!-- MENSAJES -->
     <div id="message" class="message"></div>
 
   </div>
@@ -124,19 +97,16 @@
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Firebase config -->
 <script src="js/firebase.js"></script>
-
-<!-- Auth -->
 <script src="js/auth.js"></script>
 
-<!-- Mostrar / ocultar contraseña -->
 <script>
-  function togglePassword() {
-    const input = document.getElementById("loginPassword");
-    input.type = input.type === "password" ? "text" : "password";
-  }
+function togglePassword() {
+  const input = document.getElementById("loginPassword");
+  input.type = input.type === "password" ? "text" : "password";
+}
 </script>
 
 </body>
