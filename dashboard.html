@@ -3,57 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard | Aula Virtual</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="dashboard">
-  <h1> Aula Virtual</h1>
-  <p>Has iniciado sesión correctamente</p>
+  <h1>Aula Virtual</h1>
+  <p>Sesión iniciada correctamente</p>
 
   <div class="user-info">
-    <p><strong>Nombre:</strong> <span id="userName">---</span></p>
-    <p><strong>Correo:</strong> <span id="userEmail">---</span></p>
+    <p><strong>Nombre:</strong> <span id="userName"></span></p>
+    <p><strong>Correo:</strong> <span id="userEmail"></span></p>
   </div>
 
-  <button class="logout-btn" id="logoutBtn">Cerrar sesión</button>
+  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
 </div>
 
-<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-<!-- Configuración Firebase -->
 <script src="js/firebase.js"></script>
 
-<!-- Lógica del dashboard -->
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) location.href = "index.html";
+  document.getElementById("userName").textContent = user.displayName || "Usuario";
+  document.getElementById("userEmail").textContent = user.email;
+});
 
-    const auth = firebase.auth();
-
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        window.location.href = "index.html";
-        return;
-      }
-
-      document.getElementById("userName").textContent =
-        user.displayName || "Usuario";
-
-      document.getElementById("userEmail").textContent =
-        user.email;
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "index.html";
-      });
-    });
-
-  });
+document.getElementById("logoutBtn").onclick = () => {
+  firebase.auth().signOut().then(() => location.href = "index.html");
+};
 </script>
 
 </body>
