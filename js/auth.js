@@ -14,7 +14,7 @@ const registerPassword = document.getElementById('registerPassword');
 const registerPasswordConfirm = document.getElementById('registerPasswordConfirm');
 const registerBtn = document.getElementById('registerBtn');
 
-// ===== MOSTRAR FORMULARIOS =====
+// ===== FORMULARIOS =====
 function showRegister() {
   loginForm.classList.remove('active');
   registerForm.classList.add('active');
@@ -37,7 +37,7 @@ function hideMessage() {
   messageDiv.className = 'message';
 }
 
-// ===== LOGIN EMAIL / PASSWORD =====
+// ===== LOGIN EMAIL =====
 loginBtn.onclick = async () => {
   if (!loginUsername.value || !loginPassword.value) {
     return showMessage('Completa todos los campos', 'error');
@@ -49,11 +49,7 @@ loginBtn.onclick = async () => {
       loginPassword.value
     );
 
-    showMessage('Bienvenido', 'success');
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 1000);
-
+    window.location.href = 'dashboard.html';
   } catch (error) {
     showMessage('Correo o contraseña incorrectos', 'error');
   }
@@ -82,11 +78,10 @@ registerBtn.onclick = async () => {
 
     const user = result.user;
 
-    // 🔥 GUARDAR USUARIO EN FIRESTORE
     await db.collection('users').doc(user.uid).set({
       name: registerName.value,
       email: registerEmail.value,
-      role: 'alumno', // rol por defecto
+      role: 'alumno',
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
@@ -94,31 +89,28 @@ registerBtn.onclick = async () => {
       displayName: registerName.value
     });
 
-    showMessage('Cuenta creada correctamente', 'success');
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 1000);
-
+    window.location.href = 'dashboard.html';
   } catch (error) {
-    console.error(error);
     showMessage('Error al crear la cuenta', 'error');
   }
 };
 
-// ===== LOGIN CON GOOGLE =====
+// ===== GOOGLE LOGIN (REDIRECT) =====
 googleBtn.onclick = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
+  await auth.signInWithRedirect(provider);
+};
 
-  try {
-    const result = await auth.signInWithPopup(provider);
+auth.getRedirectResult()
+  .then(async (result) => {
+    if (!result.user) return;
+
     const user = result.user;
-
-    // 🔥 CREAR USUARIO EN FIRESTORE SI NO EXISTE
-    const userRef = db.collection('users').doc(user.uid);
-    const doc = await userRef.get();
+    const ref = db.collection('users').doc(user.uid);
+    const doc = await ref.get();
 
     if (!doc.exists) {
-      await userRef.set({
+      await ref.set({
         name: user.displayName || 'Usuario Google',
         email: user.email,
         role: 'alumno',
@@ -126,30 +118,20 @@ googleBtn.onclick = async () => {
       });
     }
 
-    showMessage('Conectado con Google', 'success');
-    setTimeout(() => {
-      window.location.href = 'dashboard.html';
-    }, 1000);
+    window.location.href = 'dashboard.html';
+  })
+  .catch(console.error);
 
-  } catch (error) {
-    console.error(error);
-    showMessage('Error al iniciar con Google', 'error');
-  }
-};
-
-// ===== OLVIDÉ MI CONTRASEÑA =====
+// ===== RESET PASSWORD =====
 async function resetPassword() {
   if (!loginUsername.value) {
-    return showMessage('Ingresa tu correo primero', 'error');
+    return showMessage('Ingresa tu correo', 'error');
   }
 
   try {
     await auth.sendPasswordResetEmail(loginUsername.value);
-    showMessage(
-      'Te enviamos un correo para restablecer tu contraseña',
-      'success'
-    );
-  } catch (error) {
-    showMessage('Error al enviar el correo', 'error');
+    showMessage('Correo enviado', 'success');
+  } catch {
+    showMessage('Error al enviar correo', 'error');
   }
 }
