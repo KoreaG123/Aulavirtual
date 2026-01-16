@@ -80,7 +80,17 @@ registerBtn.onclick = async () => {
       registerPassword.value
     );
 
-    await result.user.updateProfile({
+    const user = result.user;
+
+    // 🔥 GUARDAR USUARIO EN FIRESTORE
+    await db.collection('users').doc(user.uid).set({
+      name: registerName.value,
+      email: registerEmail.value,
+      role: 'alumno', // rol por defecto
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await user.updateProfile({
       displayName: registerName.value
     });
 
@@ -90,6 +100,7 @@ registerBtn.onclick = async () => {
     }, 1000);
 
   } catch (error) {
+    console.error(error);
     showMessage('Error al crear la cuenta', 'error');
   }
 };
@@ -99,13 +110,29 @@ googleBtn.onclick = async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
 
   try {
-    await auth.signInWithPopup(provider);
+    const result = await auth.signInWithPopup(provider);
+    const user = result.user;
+
+    // 🔥 CREAR USUARIO EN FIRESTORE SI NO EXISTE
+    const userRef = db.collection('users').doc(user.uid);
+    const doc = await userRef.get();
+
+    if (!doc.exists) {
+      await userRef.set({
+        name: user.displayName || 'Usuario Google',
+        email: user.email,
+        role: 'alumno',
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
     showMessage('Conectado con Google', 'success');
     setTimeout(() => {
       window.location.href = 'dashboard.html';
     }, 1000);
 
   } catch (error) {
+    console.error(error);
     showMessage('Error al iniciar con Google', 'error');
   }
 };
@@ -118,7 +145,10 @@ async function resetPassword() {
 
   try {
     await auth.sendPasswordResetEmail(loginUsername.value);
-    showMessage('Te enviamos un correo para restablecer tu contraseña', 'success');
+    showMessage(
+      'Te enviamos un correo para restablecer tu contraseña',
+      'success'
+    );
   } catch (error) {
     showMessage('Error al enviar el correo', 'error');
   }
