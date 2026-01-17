@@ -4,20 +4,26 @@
   <meta charset="UTF-8">
   <title>Panel Administrador | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="dashboard">
-  <h1>🛠️ Panel Administrador</h1>
-  <p>Gestión de usuarios y roles</p>
+<h1>🛠️ Panel Administrador</h1>
+<p>Gestión de usuarios</p>
 
-  <div id="usersList"></div>
+<table border="1" cellpadding="8">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Rol</th>
+      <th>Acción</th>
+    </tr>
+  </thead>
+  <tbody id="usersTable"></tbody>
+</table>
 
-  <button id="logoutBtn" class="primary-btn" style="margin-top:30px">
-    Cerrar sesión
-  </button>
-</div>
+<br>
+<button id="logoutBtn">Cerrar sesión</button>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
