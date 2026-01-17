@@ -3,32 +3,36 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel Profesor | Aula Virtual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>📚 Panel Profesor</h1>
-<p>Gestión de cursos y contenidos</p>
+<div class="dashboard">
+  <h1>👨‍🏫 Panel Profesor</h1>
+  <p>Gestión de cursos y videos</p>
 
-<button id="logoutBtn">Cerrar sesión</button>
+  <div class="user-info">
+    <p><strong>Nombre:</strong> <span id="userName"></span></p>
+    <p><strong>Correo:</strong> <span id="userEmail"></span></p>
+  </div>
+
+  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
+</div>
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Tu configuración -->
+<!-- Config -->
 <script src="js/firebase.js"></script>
 
 <!-- Protección por rol -->
 <script src="js/role.js"></script>
 
-<script>
-  document.getElementById("logoutBtn").onclick = () => {
-    firebase.auth().signOut().then(() => {
-      location.href = "index.html";
-    });
-  };
-</script>
+<!-- Lógica profesor -->
+<script src="js/profesor.js"></script>
 
 </body>
 </html>
