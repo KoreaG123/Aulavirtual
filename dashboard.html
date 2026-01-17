@@ -3,36 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard | Aula Virtual</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
-<div class="dashboard">
-  <h1>Aula Virtual</h1>
-  <p>Sesión iniciada correctamente</p>
+<p style="text-align:center;margin-top:40px;">
+  Verificando sesión...
+</p>
 
-  <div class="user-info">
-    <p><strong>Nombre:</strong> <span id="userName"></span></p>
-    <p><strong>Correo:</strong> <span id="userEmail"></span></p>
-  </div>
-
-  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
-</div>
-
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Firebase config -->
 <script src="js/firebase.js"></script>
 
 <script>
-firebase.auth().onAuthStateChanged(user => {
-  if (!user) location.href = "index.html";
-  document.getElementById("userName").textContent = user.displayName || "Usuario";
-  document.getElementById("userEmail").textContent = user.email;
-});
+document.addEventListener("DOMContentLoaded", () => {
 
-document.getElementById("logoutBtn").onclick = () => {
-  firebase.auth().signOut().then(() => location.href = "index.html");
-};
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  auth.onAuthStateChanged(async (user) => {
+
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    try {
+      const doc = await db.collection("users").doc(user.uid).get();
+
+      if (!doc.exists) {
+        alert("Usuario sin rol asignado");
+        await auth.signOut();
+        window.location.href = "index.html";
+        return;
+      }
+
+      const role = doc.data().role;
+
+      if (role === "admin") {
+        window.location.href = "admin.html";
+      } 
+      else if (role === "profesor") {
+        window.location.href = "profesor.html";
+      } 
+      else {
+        window.location.href = "alumno.html";
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error al verificar el rol");
+      window.location.href = "index.html";
+    }
+
+  });
+
+});
 </script>
 
 </body>
