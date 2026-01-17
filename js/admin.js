@@ -9,53 +9,44 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // Verificar que sea admin
-    const doc = await db.collection("users").doc(user.uid).get();
-    if (!doc.exists || doc.data().role !== "admin") {
+    const me = await db.collection("users").doc(user.uid).get();
+    if (!me.exists || me.data().role !== "admin") {
       alert("Acceso denegado");
       location.href = "index.html";
       return;
     }
 
-    cargarUsuarios();
+    loadUsers();
   });
 
-  async function cargarUsuarios() {
-    table.innerHTML = "";
+  async function loadUsers() {
     const snapshot = await db.collection("users").get();
+    table.innerHTML = "";
 
     snapshot.forEach(doc => {
-      const data = doc.data();
+      const u = doc.data();
 
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${data.name || "—"}</td>
-        <td>${data.email}</td>
-        <td>${data.role}</td>
-        <td>
-          <select data-id="${doc.id}">
-            <option value="alumno">Alumno</option>
-            <option value="profesor">Profesor</option>
-            <option value="admin">Admin</option>
-          </select>
-          <button>Guardar</button>
-        </td>
+      table.innerHTML += `
+        <tr>
+          <td>${u.name}</td>
+          <td>${u.email}</td>
+          <td>
+            <select onchange="changeRole('${doc.id}', this.value)">
+              <option value="alumno" ${u.role === "alumno" ? "selected" : ""}>Alumno</option>
+              <option value="profesor" ${u.role === "profesor" ? "selected" : ""}>Profesor</option>
+              <option value="admin" ${u.role === "admin" ? "selected" : ""}>Admin</option>
+            </select>
+          </td>
+          <td>✔</td>
+        </tr>
       `;
-
-      const select = tr.querySelector("select");
-      select.value = data.role;
-
-      const button = tr.querySelector("button");
-      button.onclick = async () => {
-        await db.collection("users").doc(doc.id).update({
-          role: select.value
-        });
-        alert("Rol actualizado");
-      };
-
-      table.appendChild(tr);
     });
   }
+
+  window.changeRole = async (uid, role) => {
+    await db.collection("users").doc(uid).update({ role });
+    alert("Rol actualizado");
+  };
 
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => location.href = "index.html");
