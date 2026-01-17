@@ -2,24 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel Alumno | Aula Virtual</title>
+  <title>Panel Profesor | Aula Virtual</title>
 </head>
 <body>
 
-<h1>🎓 Panel Alumno</h1>
-<p>Cursos disponibles</p>
+<h1>👨‍🏫 Panel Profesor</h1>
+<p>Sube tus cursos</p>
 
+<form id="courseForm">
+  <input type="text" id="title" placeholder="Título del curso" required><br><br>
+  <textarea id="description" placeholder="Descripción del curso" required></textarea><br><br>
+  <input type="file" id="video" accept="video/mp4" required><br><br>
+  <button type="submit">Subir curso</button>
+</form>
+
+<hr>
+
+<h2>📚 Mis cursos</h2>
 <div id="courses"></div>
 
 <button id="logoutBtn">Cerrar sesión</button>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
 <script src="js/firebase.js"></script>
 <script src="js/role.js"></script>
-<script src="js/alumno.js"></script>
+<script src="js/profesor.js"></script>
 
 </body>
 </html>
