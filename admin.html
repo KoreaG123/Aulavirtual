@@ -2,20 +2,33 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel Admin</title>
+  <title>Panel Administrador | Aula Virtual</title>
 </head>
 <body>
 
-<h1>Panel Administrador</h1>
-<p>Acceso total</p>
+<h1>🛠️ Panel Administrador</h1>
+<p>Acceso total al sistema</p>
 
-<button onclick="firebase.auth().signOut().then(()=>location.href='index.html')">
-  Cerrar sesión
-</button>
+<button id="logoutBtn">Cerrar sesión</button>
 
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Tu configuración -->
 <script src="js/firebase.js"></script>
+
+<!-- Protección por rol -->
+<script src="js/role.js"></script>
+
+<script>
+  document.getElementById("logoutBtn").onclick = () => {
+    firebase.auth().signOut().then(() => {
+      location.href = "index.html";
+    });
+  };
+</script>
 
 </body>
 </html>
