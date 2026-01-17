@@ -10,29 +10,22 @@
 
 <div class="dashboard">
   <h1>🎓 Panel Alumno</h1>
-  <p>Acceso a tus cursos disponibles</p>
-  <div id="courses" class="courses"></div>
+  <p>Acceso a tus cursos</p>
 
-  <div class="user-info">
-    <p><strong>Nombre:</strong> <span id="userName"></span></p>
-    <p><strong>Correo:</strong> <span id="userEmail"></span></p>
-  </div>
+  <div id="coursesList">Cargando cursos...</div>
 
-  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
+  <button id="logoutBtn" class="primary-btn" style="margin-top:30px">
+    Cerrar sesión
+  </button>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Config -->
 <script src="js/firebase.js"></script>
-
-<!-- Protección por rol -->
 <script src="js/role.js"></script>
-
-<!-- Lógica alumno -->
 <script src="js/alumno.js"></script>
 
 </body>
