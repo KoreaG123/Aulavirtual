@@ -1,19 +1,21 @@
-
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
-  const db = firebase.firestore();
 
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) return;
-
-    const doc = await db.collection("users").doc(user.uid).get();
-
-    if (!doc.exists || doc.data().role !== "alumno") {
-      alert("Acceso denegado");
-      window.location.href = "index.html";
+  auth.onAuthStateChanged((user) => {
+    if (!user) {
+      location.href = "index.html";
       return;
     }
 
-    console.log("Alumno autorizado");
+    document.getElementById("userName").textContent =
+      user.displayName || "Alumno";
+
+    document.getElementById("userEmail").textContent = user.email;
   });
+
+  document.getElementById("logoutBtn").onclick = () => {
+    auth.signOut().then(() => {
+      location.href = "index.html";
+    });
+  };
 });
