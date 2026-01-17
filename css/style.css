@@ -210,3 +210,33 @@ body {
     font-size: 24px;
   }
 }
+/* CURSOS */
+.courses {
+  margin-top: 20px;
+}
+
+.course-card {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.course-card h3 {
+  color: #1a1464;
+  margin-bottom: 6px;
+}
+
+.course-card p {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.course-card iframe {
+  width: 100%;
+  height: 220px;
+  border-radius: 8px;
+  border: none;
+  }
