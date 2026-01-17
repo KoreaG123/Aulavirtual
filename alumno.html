@@ -3,23 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel Alumno | Aula Virtual</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<div class="dashboard">
-  <h1>🎓 Panel Alumno</h1>
-  <p>Acceso a tus cursos</p>
+<h1>🎓 Panel Alumno</h1>
+<p>Cursos disponibles</p>
 
-  <div id="coursesList">Cargando cursos...</div>
+<div id="courses"></div>
 
-  <button id="logoutBtn" class="primary-btn" style="margin-top:30px">
-    Cerrar sesión
-  </button>
-</div>
+<button id="logoutBtn">Cerrar sesión</button>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
