@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
+  const coursesList = document.getElementById("coursesList");
 
   auth.onAuthStateChanged(async (user) => {
     if (!user) {
@@ -8,46 +9,39 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    document.getElementById("userName").textContent =
-      user.displayName || "Alumno";
+    loadCourses();
+  });
 
-    document.getElementById("userEmail").textContent = user.email;
-
-    // 🔥 CARGAR CURSOS
-    const coursesDiv = document.getElementById("courses");
-    coursesDiv.innerHTML = "Cargando cursos...";
+  async function loadCourses() {
+    coursesList.innerHTML = "Cargando cursos...";
 
     try {
-      const snapshot = await db.collection("courses").get();
-      coursesDiv.innerHTML = "";
+      const snapshot = await db.collection("courses").orderBy("createdAt", "desc").get();
+      coursesList.innerHTML = "";
 
       if (snapshot.empty) {
-        coursesDiv.innerHTML = "<p>No hay cursos disponibles</p>";
+        coursesList.innerHTML = "<p>No hay cursos disponibles.</p>";
         return;
       }
 
       snapshot.forEach(doc => {
         const course = doc.data();
-
-        const card = document.createElement("div");
-        card.className = "course-card";
-        card.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "course-card";
+        div.innerHTML = `
           <h3>${course.title}</h3>
-          <p>${course.description}</p>
-          <iframe 
-            src="${course.videoUrl}" 
-            allowfullscreen>
-          </iframe>
+          <p>${course.description || ""}</p>
+          ${course.videoUrl ? `<video width="320" controls src="${course.videoUrl}"></video>` : ""}
+          <hr>
         `;
-
-        coursesDiv.appendChild(card);
+        coursesList.appendChild(div);
       });
 
-    } catch (e) {
-      coursesDiv.innerHTML = "<p>Error al cargar cursos</p>";
-      console.error(e);
+    } catch (err) {
+      console.error(err);
+      coursesList.innerHTML = "<p>Error al cargar los cursos.</p>";
     }
-  });
+  }
 
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => location.href = "index.html");
