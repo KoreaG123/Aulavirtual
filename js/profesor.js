@@ -1,65 +1,64 @@
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
+document.addEventListener("DOMContentLoaded", () => {
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
-const form = document.getElementById("courseForm");
-const coursesDiv = document.getElementById("courses");
+  const titleInput = document.getElementById("title");
+  const descInput = document.getElementById("description");
+  const btn = document.getElementById("createCourseBtn");
+  const list = document.getElementById("coursesList");
 
-// Subir curso
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+  let currentUser = null;
 
-  const title = document.getElementById("title").value;
-  const description = document.getElementById("description").value;
-  const videoFile = document.getElementById("video").files[0];
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      location.href = "index.html";
+      return;
+    }
 
-  if (!videoFile) return alert("Sube un video");
+    const doc = await db.collection("users").doc(user.uid).get();
+    if (!doc.exists || doc.data().role !== "profesor") {
+      alert("Acceso denegado");
+      location.href = "index.html";
+      return;
+    }
 
-  const user = auth.currentUser;
-  const videoRef = storage.ref(`courses/${user.uid}/${Date.now()}_${videoFile.name}`);
-
-  await videoRef.put(videoFile);
-  const videoUrl = await videoRef.getDownloadURL();
-
-  await db.collection("courses").add({
-    title,
-    description,
-    videoUrl,
-    createdBy: user.uid,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    currentUser = user;
+    cargarCursos();
   });
 
-  alert("Curso subido correctamente");
-  form.reset();
-  loadCourses();
+  btn.onclick = async () => {
+    if (!titleInput.value || !descInput.value) {
+      alert("Completa todos los campos");
+      return;
+    }
+
+    await db.collection("courses").add({
+      title: titleInput.value,
+      description: descInput.value,
+      createdBy: currentUser.uid,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    titleInput.value = "";
+    descInput.value = "";
+    cargarCursos();
+  };
+
+  async function cargarCursos() {
+    list.innerHTML = "";
+    const snapshot = await db
+      .collection("courses")
+      .where("createdBy", "==", currentUser.uid)
+      .get();
+
+    snapshot.forEach(doc => {
+      const li = document.createElement("li");
+      li.textContent = doc.data().title;
+      list.appendChild(li);
+    });
+  }
+
+  document.getElementById("logoutBtn").onclick = () => {
+    auth.signOut().then(() => location.href = "index.html");
+  };
 });
-
-// Cargar cursos del profesor
-async function loadCourses() {
-  coursesDiv.innerHTML = "";
-
-  const user = auth.currentUser;
-  const snapshot = await db.collection("courses")
-    .where("createdBy", "==", user.uid)
-    .get();
-
-  snapshot.forEach(doc => {
-    const c = doc.data();
-    coursesDiv.innerHTML += `
-      <div>
-        <h3>${c.title}</h3>
-        <p>${c.description}</p>
-        <video src="${c.videoUrl}" controls width="300"></video>
-        <hr>
-      </div>
-    `;
-  });
-}
-
-auth.onAuthStateChanged(user => {
-  if (user) loadCourses();
-});
-
-document.getElementById("logoutBtn").onclick = () => {
-  auth.signOut().then(() => location.href = "index.html");
-};
