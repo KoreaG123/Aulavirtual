@@ -240,3 +240,16 @@ body {
   border-radius: 8px;
   border: none;
   }
+
+.course-card {
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.course-card h3 {
+  margin-bottom: 8px;
+  color: #1a1464;
+}
