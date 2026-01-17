@@ -6,9 +6,24 @@
 </head>
 <body>
 
-<h1>🛠️ Panel Administrador</h1>
-<p>Acceso total al sistema</p>
+<h1>🛠 Panel Administrador</h1>
 
+<h2>Crear curso</h2>
+
+<input type="text" id="courseTitle" placeholder="Título del curso">
+<br><br>
+
+<textarea id="courseDescription" placeholder="Descripción del curso"></textarea>
+<br><br>
+
+<button id="createCourseBtn">Crear curso</button>
+
+<hr>
+
+<h2>Cursos creados</h2>
+<ul id="coursesList"></ul>
+
+<br>
 <button id="logoutBtn">Cerrar sesión</button>
 
 <!-- Firebase SDK -->
@@ -16,19 +31,14 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Tu configuración -->
+<!-- Firebase config -->
 <script src="js/firebase.js"></script>
 
 <!-- Protección por rol -->
 <script src="js/role.js"></script>
 
-<script>
-  document.getElementById("logoutBtn").onclick = () => {
-    firebase.auth().signOut().then(() => {
-      location.href = "index.html";
-    });
-  };
-</script>
+<!-- Lógica del admin -->
+<script src="js/admin.js"></script>
 
 </body>
 </html>
