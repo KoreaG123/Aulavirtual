@@ -2,39 +2,24 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Panel Profesor | Aula Virtual</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
+  <title>Panel Alumno | Aula Virtual</title>
 </head>
 <body>
 
-<div class="dashboard">
-  <h1>👨‍🏫 Panel Profesor</h1>
-  <p>Sube y gestiona tus cursos</p>
+<h1>🎓 Panel Alumno</h1>
+<p>Cursos disponibles</p>
 
-  <div class="form-section">
-    <input type="text" id="courseTitle" placeholder="Título del curso">
-    <textarea id="courseDescription" placeholder="Descripción del curso"></textarea>
-    <input type="file" id="courseVideo" accept="video/*">
-    <button id="uploadBtn" class="primary-btn">Subir curso</button>
-  </div>
+<div id="courses"></div>
 
-  <div id="message"></div>
+<button id="logoutBtn">Cerrar sesión</button>
 
-  <button id="logoutBtn" class="primary-btn" style="margin-top:20px">
-    Cerrar sesión
-  </button>
-</div>
-
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
 <script src="js/firebase.js"></script>
 <script src="js/role.js"></script>
-<script src="js/profesor.js"></script>
+<script src="js/alumno.js"></script>
 
 </body>
 </html>
