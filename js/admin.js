@@ -1,3 +1,5 @@
+console.log("ADMIN JS CARGADO");
+
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
@@ -28,8 +30,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       table.innerHTML += `
         <tr>
-          <td>${u.name}</td>
-          <td>${u.email}</td>
+          <td>${u.name || ""}</td>
+          <td>${u.email || ""}</td>
           <td>
             <select onchange="changeRole('${doc.id}', this.value)">
               <option value="alumno" ${u.role === "alumno" ? "selected" : ""}>Alumno</option>
