@@ -10,28 +10,51 @@
 
 <div class="dashboard">
   <h1>👨‍🏫 Panel Profesor</h1>
-  <p>Gestión de cursos y videos</p>
+  <p>Crear y administrar cursos</p>
 
   <div class="user-info">
     <p><strong>Nombre:</strong> <span id="userName"></span></p>
     <p><strong>Correo:</strong> <span id="userEmail"></span></p>
   </div>
 
-  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
+  <hr>
+
+  <h2>➕ Crear curso</h2>
+
+  <div class="input-group">
+    <label>Título del curso</label>
+    <input type="text" id="title">
+  </div>
+
+  <div class="input-group">
+    <label>Descripción</label>
+    <input type="text" id="description">
+  </div>
+
+  <div class="input-group">
+    <label>URL del video (YouTube embed)</label>
+    <input type="text" id="videoUrl" placeholder="https://www.youtube.com/embed/...">
+  </div>
+
+  <button id="createCourseBtn" class="primary-btn">
+    Crear curso
+  </button>
+
+  <h2 style="margin-top:30px">📚 Mis cursos</h2>
+  <div id="myCourses"></div>
+
+  <button id="logoutBtn" class="primary-btn" style="margin-top:30px">
+    Cerrar sesión
+  </button>
 </div>
 
-<!-- Firebase SDK -->
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<!-- Config -->
 <script src="js/firebase.js"></script>
-
-<!-- Protección por rol -->
 <script src="js/role.js"></script>
-
-<!-- Lógica profesor -->
 <script src="js/profesor.js"></script>
 
 </body>
