@@ -1,30 +1,43 @@
-
-document.addEventListener("DOMContentLoaded", async () => {
-  const auth = firebase.auth();
+document.addEventListener("DOMContentLoaded", () => {
   const db = firebase.firestore();
+  const auth = firebase.auth();
 
-  auth.onAuthStateChanged(async (user) => {
-    if (!user) return;
+  const titleInput = document.getElementById("courseTitle");
+  const descInput = document.getElementById("courseDescription");
+  const createBtn = document.getElementById("createCourseBtn");
+  const list = document.getElementById("coursesList");
+  const logoutBtn = document.getElementById("logoutBtn");
 
-    const userDoc = await db.collection("users").doc(user.uid).get();
-
-    if (!userDoc.exists || userDoc.data().role !== "admin") {
-      alert("Acceso denegado");
-      window.location.href = "index.html";
+  createBtn.onclick = async () => {
+    if (!titleInput.value || !descInput.value) {
+      alert("Completa todos los campos");
       return;
     }
 
-    console.log("Admin autorizado");
-  });
+    await db.collection("courses").add({
+      title: titleInput.value,
+      description: descInput.value,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    titleInput.value = "";
+    descInput.value = "";
+    loadCourses();
+  };
+
+  async function loadCourses() {
+    list.innerHTML = "";
+    const snapshot = await db.collection("courses").orderBy("createdAt", "desc").get();
+    snapshot.forEach(doc => {
+      const li = document.createElement("li");
+      li.textContent = doc.data().title;
+      list.appendChild(li);
+    });
+  }
+
+  loadCourses();
+
+  logoutBtn.onclick = () => {
+    auth.signOut().then(() => location.href = "index.html");
+  };
 });
-
-/* 🔥 CAMBIAR ROL DE USUARIOS */
-async function cambiarRol(uid, nuevoRol) {
-  const db = firebase.firestore();
-
-  await db.collection("users").doc(uid).update({
-    role: nuevoRol
-  });
-
-  alert("Rol actualizado");
-}
