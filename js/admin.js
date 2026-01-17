@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
-  const usersList = document.getElementById("usersList");
+  const table = document.getElementById("usersTable");
 
   auth.onAuthStateChanged(async (user) => {
     if (!user) {
@@ -9,44 +9,53 @@ document.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    loadUsers(user.uid);
+    // Verificar que sea admin
+    const doc = await db.collection("users").doc(user.uid).get();
+    if (!doc.exists || doc.data().role !== "admin") {
+      alert("Acceso denegado");
+      location.href = "index.html";
+      return;
+    }
+
+    cargarUsuarios();
   });
 
-  async function loadUsers(currentUid) {
-    usersList.innerHTML = "Cargando usuarios...";
-
+  async function cargarUsuarios() {
+    table.innerHTML = "";
     const snapshot = await db.collection("users").get();
-    usersList.innerHTML = "";
 
     snapshot.forEach(doc => {
-      const u = doc.data();
-      const uid = doc.id;
+      const data = doc.data();
 
-      if (uid === currentUid) return; // admin no se cambia a sí mismo
-
-      const div = document.createElement("div");
-      div.className = "course-card";
-      div.innerHTML = `
-        <strong>${u.name}</strong><br>
-        ${u.email}<br>
-        Rol actual: <b>${u.role}</b><br><br>
-
-        <button onclick="changeRole('${uid}', 'alumno')">Alumno</button>
-        <button onclick="changeRole('${uid}', 'profesor')">Profesor</button>
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${data.name || "—"}</td>
+        <td>${data.email}</td>
+        <td>${data.role}</td>
+        <td>
+          <select data-id="${doc.id}">
+            <option value="alumno">Alumno</option>
+            <option value="profesor">Profesor</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button>Guardar</button>
+        </td>
       `;
-      usersList.appendChild(div);
+
+      const select = tr.querySelector("select");
+      select.value = data.role;
+
+      const button = tr.querySelector("button");
+      button.onclick = async () => {
+        await db.collection("users").doc(doc.id).update({
+          role: select.value
+        });
+        alert("Rol actualizado");
+      };
+
+      table.appendChild(tr);
     });
   }
-
-  window.changeRole = async (uid, role) => {
-    try {
-      await db.collection("users").doc(uid).update({ role });
-      alert("Rol actualizado");
-      loadUsers(auth.currentUser.uid);
-    } catch (e) {
-      alert("No autorizado");
-    }
-  };
 
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => location.href = "index.html");
