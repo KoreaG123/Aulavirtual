@@ -1,22 +1,24 @@
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// PROTEGER PÁGINA
+// PROTEGER LA PÁGINA
 auth.onAuthStateChanged(async user => {
   if (!user) {
-    location.href = "login.html";
+    location.href = "index.html";
     return;
   }
 
-  const doc = await db.collection("users").doc(user.uid).get();
+  const ref = db.collection("users").doc(user.uid);
+  const doc = await ref.get();
 
-  if (!doc.exists || doc.data().role !== "guest") {
-    location.href = "alumno.html";
+  // Si ya es alumno → dashboard
+  if (doc.exists && doc.data().role === "alumno") {
+    location.href = "dashboard.html";
   }
 });
 
-// BOTÓN VOLVERTE ALUMNO
-async function becomeStudent() {
+// VOLVERTE ALUMNO
+document.getElementById("beStudentBtn").addEventListener("click", async () => {
   const user = auth.currentUser;
   if (!user) return;
 
@@ -24,13 +26,12 @@ async function becomeStudent() {
     role: "alumno"
   });
 
-  alert("🎉 ¡Felicidades! Ahora eres alumno");
-  location.href = "alumno.html";
-}
+  alert("🎉 ¡Ahora eres alumno!");
+  location.href = "dashboard.html";
+});
 
 // LOGOUT
-function logout() {
-  auth.signOut().then(() => {
-    location.href = "login.html";
-  });
-}
+document.getElementById("logoutBtn").addEventListener("click", async () => {
+  await auth.signOut();
+  location.href = "index.html";
+});
