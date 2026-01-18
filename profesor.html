@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel Profesor | Aula Virtual</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
 <h1>📚 Panel Profesor</h1>
-<p>Crear y gestionar cursos</p>
 
-<h3>Crear nuevo curso</h3>
+<h3>Crear curso</h3>
+<input id="title" placeholder="Título del curso"><br><br>
+<textarea id="description" placeholder="Descripción"></textarea><br><br>
 
-<input type="text" id="title" placeholder="Título del curso"><br><br>
-<textarea id="description" placeholder="Descripción del curso"></textarea><br><br>
+<input type="file" id="video"><br><br>
 
 <button id="createCourse">Crear curso</button>
 
@@ -28,6 +27,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
 <script src="js/firebase.js"></script>
 <script src="js/role.js"></script>
