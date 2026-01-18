@@ -1,27 +1,36 @@
 console.log("ADMIN JS CARGADO");
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
   const usersTable = document.getElementById("usersTable");
   const coursesTable = document.getElementById("coursesTable");
+  const requestsList = document.getElementById("requestsList");
 
   let alumnos = [];
 
-  auth.onAuthStateChanged(async user => {
-    if (!user) return location.href = "index.html";
+  auth.onAuthStateChanged(async (user) => {
+    if (!user) {
+      location.href = "index.html";
+      return;
+    }
 
     const me = await db.collection("users").doc(user.uid).get();
     if (!me.exists || me.data().role !== "admin") {
       alert("Acceso denegado");
-      return location.href = "index.html";
+      location.href = "index.html";
+      return;
     }
 
     loadUsers();
     loadCourses();
+    loadRequests();
   });
 
+  /* =======================
+     USUARIOS
+  ======================= */
   async function loadUsers() {
     const snapshot = await db.collection("users").get();
     usersTable.innerHTML = "";
@@ -32,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       usersTable.innerHTML += `
         <tr>
-          <td>${u.name}</td>
+          <td>${u.name || "-"}</td>
           <td>${u.email}</td>
           <td>${u.role}</td>
         </tr>
@@ -44,6 +53,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  /* =======================
+     SOLICITUDES GUEST → ALUMNO
+  ======================= */
+  async function loadRequests() {
+    requestsList.innerHTML = "";
+
+    const snapshot = await db
+      .collection("requests")
+      .where("status", "==", "pending")
+      .get();
+
+    if (snapshot.empty) {
+      requestsList.innerHTML = "<p>No hay solicitudes pendientes</p>";
+      return;
+    }
+
+    snapshot.forEach(doc => {
+      const r = doc.data();
+
+      requestsList.innerHTML += `
+        <div class="course-card">
+          <p><strong>${r.name}</strong><br>${r.email}</p>
+          <button onclick="approveUser('${r.uid}')">
+            ✅ Aprobar como alumno
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  window.approveUser = async (uid) => {
+    await db.collection("users").doc(uid).update({
+      role: "alumno"
+    });
+
+    await db.collection("requests").doc(uid).update({
+      status: "approved"
+    });
+
+    alert("🎉 Usuario aprobado como alumno");
+    loadUsers();
+    loadRequests();
+  };
+
+  /* =======================
+     CURSOS
+  ======================= */
   async function loadCourses() {
     const snapshot = await db.collection("courses").get();
     coursesTable.innerHTML = "";
@@ -59,6 +115,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="course-card">
           <h4>${c.title}</h4>
           <select id="sel-${doc.id}">
+            <option value="">Seleccionar alumno</option>
             ${options}
           </select>
           <button onclick="enroll('${doc.id}', '${c.title}', '${c.videoUrl}')">
@@ -74,6 +131,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     const select = document.getElementById(`sel-${courseId}`);
     const uid = select.value;
 
+    if (!uid) {
+      alert("Selecciona un alumno");
+      return;
+    }
+
     await db
       .collection("users")
       .doc(uid)
@@ -81,12 +143,16 @@ document.addEventListener("DOMContentLoaded", async () => {
       .doc(courseId)
       .set({
         title,
-        videoUrl
+        videoUrl,
+        enrolledAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-    alert("Alumno inscrito correctamente");
+    alert("Alumno inscrito correctamente 🎓");
   };
 
+  /* =======================
+     LOGOUT
+  ======================= */
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => location.href = "index.html");
   };
