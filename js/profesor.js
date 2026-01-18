@@ -7,9 +7,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const title = document.getElementById("title");
   const description = document.getElementById("description");
   const videoUrl = document.getElementById("videoUrl");
-  const list = document.getElementById("coursesList");
+  const createBtn = document.getElementById("createBtn");
+  const myCourses = document.getElementById("myCourses");
 
-  auth.onAuthStateChanged(async user => {
+  let currentUser = null;
+
+  auth.onAuthStateChanged(async (user) => {
     if (!user) return location.href = "index.html";
 
     const me = await db.collection("users").doc(user.uid).get();
@@ -18,13 +21,12 @@ document.addEventListener("DOMContentLoaded", () => {
       return location.href = "index.html";
     }
 
-    loadCourses(user.uid);
-
-    document.getElementById("createBtn").onclick = () =>
-      createCourse(user.uid);
+    currentUser = user;
+    loadMyCourses();
   });
 
-  async function createCourse(uid) {
+  // CREAR CURSO
+  createBtn.onclick = async () => {
     if (!title.value || !description.value || !videoUrl.value) {
       alert("Completa todos los campos");
       return;
@@ -34,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
       title: title.value,
       description: description.value,
       videoUrl: videoUrl.value,
-      createdBy: uid,
+      createdBy: currentUser.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
@@ -42,34 +44,40 @@ document.addEventListener("DOMContentLoaded", () => {
     description.value = "";
     videoUrl.value = "";
 
-    loadCourses(uid);
-  }
+    loadMyCourses();
+  };
 
-  async function loadCourses(uid) {
-    list.innerHTML = "";
+  // CARGAR MIS CURSOS
+  async function loadMyCourses() {
+    myCourses.innerHTML = "";
 
     const snapshot = await db
       .collection("courses")
-      .where("createdBy", "==", uid)
+      .where("createdBy", "==", currentUser.uid)
       .get();
 
     if (snapshot.empty) {
-      list.innerHTML = "<p>No tienes cursos creados</p>";
+      myCourses.innerHTML = "<p>No tienes cursos creados</p>";
       return;
     }
 
     snapshot.forEach(doc => {
       const c = doc.data();
 
-      list.innerHTML += `
+      myCourses.innerHTML += `
         <div class="course-card">
-          <h4>${c.title}</h4>
+          <h3>${c.title}</h3>
           <p>${c.description}</p>
+          <button onclick="watch('${c.videoUrl}')">▶ Ver video</button>
         </div>
         <hr>
       `;
     });
   }
+
+  window.watch = (url) => {
+    window.open(url, "_blank");
+  };
 
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => location.href = "index.html");
