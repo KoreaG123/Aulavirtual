@@ -1,45 +1,45 @@
+console.log("ALUMNO JS CARGADO");
+
 document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
-  const list = document.getElementById("coursesList");
+  const container = document.getElementById("coursesList");
 
   auth.onAuthStateChanged(async (user) => {
-    if (!user) {
-      location.href = "index.html";
-      return;
-    }
+    if (!user) return location.href = "index.html";
 
-    const doc = await db.collection("users").doc(user.uid).get();
-    if (!doc.exists || doc.data().role !== "alumno") {
+    const me = await db.collection("users").doc(user.uid).get();
+    if (!me.exists || me.data().role !== "alumno") {
       alert("Acceso denegado");
-      location.href = "index.html";
-      return;
+      return location.href = "index.html";
     }
 
-    cargarCursos();
+    loadCourses();
   });
 
-  async function cargarCursos() {
-    list.innerHTML = "";
+  async function loadCourses() {
+    container.innerHTML = "";
 
-    const snapshot = await db.collection("courses").get();
+    const snapshot = await db.collection("courses")
+      .orderBy("createdAt", "desc")
+      .get();
 
     if (snapshot.empty) {
-      list.innerHTML = "<li>No hay cursos aún</li>";
+      container.innerHTML = "<p>No hay cursos aún</p>";
       return;
     }
 
     snapshot.forEach(doc => {
-      const curso = doc.data();
+      const c = doc.data();
 
-      const li = document.createElement("li");
-      li.innerHTML = `
-        <strong>${curso.title}</strong><br>
-        ${curso.description}
+      container.innerHTML += `
+        <div class="course-card">
+          <h3>${c.title}</h3>
+          <p>${c.description}</p>
+          <video src="${c.videoUrl}" controls width="100%"></video>
+        </div>
         <hr>
       `;
-
-      list.appendChild(li);
     });
   }
 
