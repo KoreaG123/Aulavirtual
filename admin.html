@@ -4,25 +4,31 @@
   <meta charset="UTF-8">
   <title>Panel Administrador | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="dashboard">
   <h1>🛠️ Panel Administrador</h1>
-  <p>Gestión de usuarios y permisos</p>
+  <p>Gestión de usuarios y cursos</p>
 
-  <table border="1" width="100%" style="margin-top:20px;">
+  <h3>👥 Usuarios</h3>
+  <table border="1" width="100%">
     <thead>
       <tr>
         <th>Nombre</th>
-        <th>Correo</th>
+        <th>Email</th>
         <th>Rol</th>
-        <th>Acción</th>
       </tr>
     </thead>
     <tbody id="usersTable"></tbody>
   </table>
+
+  <hr>
+
+  <h3>📚 Cursos</h3>
+  <div id="coursesTable"></div>
 
   <br>
   <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
