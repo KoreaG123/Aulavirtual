@@ -5,19 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  /* =======================
-     LOGIN EMAIL / PASSWORD
-  ======================= */
   const loginBtn = document.getElementById("loginBtn");
   const googleBtn = document.getElementById("googleBtn");
   const registerBtn = document.getElementById("registerBtn");
   const msg = document.getElementById("message");
 
-  if (!loginBtn || !googleBtn || !registerBtn) {
-    console.error("❌ Botones no encontrados en el DOM");
-    return;
-  }
-
+  /* =======================
+     LOGIN EMAIL / PASSWORD
+  ======================= */
   loginBtn.addEventListener("click", async () => {
     const email = document.getElementById("loginUsername").value.trim();
     const password = document.getElementById("loginPassword").value.trim();
@@ -30,8 +25,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      location.href = "dashboard.html";
+      const cred = await auth.signInWithEmailAndPassword(email, password);
+      redirectByRole(cred.user.uid);
     } catch (err) {
       msg.textContent = err.message;
     }
@@ -48,18 +43,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const user = result.user;
 
       const ref = db.collection("users").doc(user.uid);
-      const doc = await ref.get();
+      const snap = await ref.get();
 
-      if (!doc.exists) {
+      // 👉 Usuario nuevo = guest
+      if (!snap.exists) {
         await ref.set({
-          name: user.displayName || "Alumno",
+          name: user.displayName || "Usuario",
           email: user.email,
-          role: "alumno",
+          role: "guest",
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
+
+        location.href = "welcome.html";
+        return;
       }
 
-      location.href = "dashboard.html";
+      redirectByRole(user.uid);
+
     } catch (err) {
       alert(err.message);
     }
@@ -89,21 +89,46 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
 
+      // 👉 Usuario nuevo = guest
       await db.collection("users").doc(cred.user.uid).set({
         name,
         email,
-        role: "alumno",
+        role: "guest",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
 
-      location.href = "dashboard.html";
+      location.href = "welcome.html";
+
     } catch (err) {
       msg.textContent = err.message;
     }
   });
 
   /* =======================
-     HELPERS
+     REDIRECCIÓN POR ROL
+  ======================= */
+  async function redirectByRole(uid) {
+    const doc = await db.collection("users").doc(uid).get();
+
+    if (!doc.exists) {
+      alert("Usuario sin rol");
+      auth.signOut();
+      return;
+    }
+
+    const role = doc.data().role;
+
+    if (role === "admin") {
+      location.href = "admin.html";
+    } else if (role === "alumno") {
+      location.href = "dashboard.html";
+    } else {
+      location.href = "welcome.html";
+    }
+  }
+
+  /* =======================
+     HELPERS UI
   ======================= */
   window.showRegister = () => {
     document.getElementById("loginForm").classList.remove("active");
