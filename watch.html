@@ -2,22 +2,38 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Reproduciendo curso | Aula Virtual</title>
+  <title>Reproductor | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    .video-container {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      background: #000;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="dashboard">
-  <h1 id="courseTitle">📺 Reproduciendo curso</h1>
+<div class="dashboard video-container">
+  <h1>🎬 Reproduciendo curso</h1>
 
-  <video id="videoPlayer" controls width="100%" style="max-width:800px;">
-    Tu navegador no soporta video.
-  </video>
+  <video id="videoPlayer" controls autoplay></video>
 
-  <br><br>
-  <button onclick="history.back()" class="primary-btn">⬅ Volver</button>
+  <button class="primary-btn back-btn" onclick="goBack()">
+    ⬅ Volver a Mis Cursos
+  </button>
 </div>
 
 <!-- Firebase -->
@@ -26,7 +42,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="js/firebase.js"></script>
-<script src="js/role.js"></script>
 <script src="js/watch.js"></script>
 
 </body>
