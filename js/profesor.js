@@ -1,13 +1,12 @@
+console.log("PROFESOR JS CARGADO");
+
 document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
   const titleInput = document.getElementById("title");
   const descInput = document.getElementById("description");
-  const btn = document.getElementById("createCourseBtn");
   const list = document.getElementById("coursesList");
-
-  let currentUser = null;
 
   auth.onAuthStateChanged(async (user) => {
     if (!user) {
@@ -15,46 +14,50 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const doc = await db.collection("users").doc(user.uid).get();
-    if (!doc.exists || doc.data().role !== "profesor") {
-      alert("Acceso denegado");
+    const me = await db.collection("users").doc(user.uid).get();
+    if (!me.exists || me.data().role !== "profesor") {
+      alert("Acceso solo para profesores");
       location.href = "index.html";
       return;
     }
 
-    currentUser = user;
-    cargarCursos();
+    loadCourses(user.uid);
   });
 
-  btn.onclick = async () => {
-    if (!titleInput.value || !descInput.value) {
+  document.getElementById("createCourse").onclick = async () => {
+    const title = titleInput.value.trim();
+    const description = descInput.value.trim();
+
+    if (!title || !description) {
       alert("Completa todos los campos");
       return;
     }
 
+    const user = auth.currentUser;
+
     await db.collection("courses").add({
-      title: titleInput.value,
-      description: descInput.value,
-      createdBy: currentUser.uid,
+      title,
+      description,
+      createdBy: user.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     titleInput.value = "";
     descInput.value = "";
-    cargarCursos();
+
+    loadCourses(user.uid);
   };
 
-  async function cargarCursos() {
+  async function loadCourses(uid) {
     list.innerHTML = "";
-    const snapshot = await db
-      .collection("courses")
-      .where("createdBy", "==", currentUser.uid)
+
+    const snapshot = await db.collection("courses")
+      .where("createdBy", "==", uid)
       .get();
 
     snapshot.forEach(doc => {
-      const li = document.createElement("li");
-      li.textContent = doc.data().title;
-      list.appendChild(li);
+      const c = doc.data();
+      list.innerHTML += `<li><strong>${c.title}</strong> - ${c.description}</li>`;
     });
   }
 
