@@ -3,31 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel Profesor | Aula Virtual</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>📚 Panel Profesor</h1>
+<div class="dashboard">
+  <h1>📚 Panel Profesor</h1>
+  <p>Crear y gestionar tus cursos</p>
 
-<h3>Crear curso</h3>
-<input id="title" placeholder="Título del curso"><br><br>
-<textarea id="description" placeholder="Descripción"></textarea><br><br>
+  <h3>➕ Nuevo curso</h3>
 
-<input type="file" id="video"><br><br>
+  <input id="title" placeholder="Título del curso"><br><br>
+  <input id="description" placeholder="Descripción corta"><br><br>
+  <input id="videoUrl" placeholder="Link del video (YouTube o mp4)"><br><br>
 
-<button id="createCourse">Crear curso</button>
+  <button id="createBtn" class="primary-btn">Crear curso</button>
 
-<hr>
+  <hr>
 
-<h3>Mis cursos</h3>
-<ul id="coursesList"></ul>
+  <h3>📋 Mis cursos</h3>
+  <div id="coursesList"></div>
 
-<button id="logoutBtn">Cerrar sesión</button>
+  <br>
+  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
+</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
 <script src="js/firebase.js"></script>
 <script src="js/role.js"></script>
