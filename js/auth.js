@@ -1,57 +1,133 @@
-// referencias
-const loginForm = document.getElementById('loginForm');
-const registerForm = document.getElementById('registerForm');
-const messageDiv = document.getElementById('message');
+console.log("AUTH JS CARGADO");
 
-function showRegister(){loginForm.classList.remove('active');registerForm.classList.add('active')}
-function showLogin(){registerForm.classList.remove('active');loginForm.classList.add('active')}
+const auth = firebase.auth();
+const db = firebase.firestore();
 
-function showMessage(msg,type){
-  messageDiv.textContent = msg;
-  messageDiv.className = `message ${type} show`;
-}
+// =======================
+// LOGIN EMAIL / PASSWORD
+// =======================
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("loginUsername").value.trim();
+  const password = document.getElementById("loginPassword").value.trim();
+  const msg = document.getElementById("message");
 
-loginBtn.onclick = async () => {
-  try {
-    await auth.signInWithEmailAndPassword(loginUsername.value, loginPassword.value);
-    location.href = "dashboard.html";
-  } catch {
-    showMessage("Credenciales incorrectas","error");
+  if (!email || !password) {
+    msg.textContent = "Completa todos los campos";
+    return;
   }
-};
 
-registerBtn.onclick = async () => {
   try {
-    const res = await auth.createUserWithEmailAndPassword(registerEmail.value, registerPassword.value);
-    await db.collection("users").doc(res.user.uid).set({
-      name: registerName.value,
-      email: registerEmail.value,
-      role: "alumno",
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-    await res.user.updateProfile({displayName: registerName.value});
-    location.href = "dashboard.html";
-  } catch {
-    showMessage("Error al registrar","error");
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    redirectByRole(cred.user.uid);
+  } catch (err) {
+    msg.textContent = err.message;
   }
-};
+});
 
-googleBtn.onclick = async () => {
+// =======================
+// LOGIN GOOGLE
+// =======================
+document.getElementById("googleBtn").addEventListener("click", async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
-  const res = await auth.signInWithPopup(provider);
-  const ref = db.collection("users").doc(res.user.uid);
-  if (!(await ref.get()).exists) {
-    await ref.set({
-      name: res.user.displayName,
-      email: res.user.email,
+
+  try {
+    const result = await auth.signInWithPopup(provider);
+    const user = result.user;
+
+    const ref = db.collection("users").doc(user.uid);
+    const snap = await ref.get();
+
+    if (!snap.exists) {
+      await ref.set({
+        name: user.displayName,
+        email: user.email,
+        role: "alumno",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    redirectByRole(user.uid);
+  } catch (err) {
+    alert(err.message);
+  }
+});
+
+// =======================
+// REDIRECCIÓN POR ROL
+// =======================
+async function redirectByRole(uid) {
+  const doc = await db.collection("users").doc(uid).get();
+
+  if (!doc.exists) {
+    alert("Usuario sin rol asignado");
+    return;
+  }
+
+  const role = doc.data().role;
+
+  if (role === "admin") {
+    location.href = "admin.html";
+  } else if (role === "profesor") {
+    location.href = "prof.html";
+  } else {
+    location.href = "alumno.html";
+  }
+}
+
+// =======================
+// REGISTRO
+// =======================
+document.getElementById("registerBtn").addEventListener("click", async () => {
+  const name = document.getElementById("registerName").value.trim();
+  const email = document.getElementById("registerEmail").value.trim();
+  const pass = document.getElementById("registerPassword").value.trim();
+  const pass2 = document.getElementById("registerPasswordConfirm").value.trim();
+  const msg = document.getElementById("message");
+
+  if (!name || !email || !pass || !pass2) {
+    msg.textContent = "Completa todos los campos";
+    return;
+  }
+
+  if (pass !== pass2) {
+    msg.textContent = "Las contraseñas no coinciden";
+    return;
+  }
+
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+
+    await db.collection("users").doc(cred.user.uid).set({
+      name,
+      email,
       role: "alumno",
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
+
+    location.href = "alumno.html";
+  } catch (err) {
+    msg.textContent = err.message;
   }
-  location.href = "dashboard.html";
+});
+
+// =======================
+// UI HELPERS
+// =======================
+window.showRegister = () => {
+  document.getElementById("loginForm").classList.remove("active");
+  document.getElementById("registerForm").classList.add("active");
 };
 
-async function resetPassword(){
-  await auth.sendPasswordResetEmail(loginUsername.value);
-  showMessage("Correo enviado","success");
-}
+window.showLogin = () => {
+  document.getElementById("registerForm").classList.remove("active");
+  document.getElementById("loginForm").classList.add("active");
+};
+
+window.resetPassword = () => {
+  const email = document.getElementById("loginUsername").value;
+  if (!email) return alert("Ingresa tu correo");
+
+  auth.sendPasswordResetEmail(email)
+    .then(() => alert("Correo enviado"))
+    .catch(err => alert(err.message));
+};
