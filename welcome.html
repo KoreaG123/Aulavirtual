@@ -9,49 +9,32 @@
 <body>
 
 <div class="dashboard">
-
   <h1>👋 Bienvenido a Aula Virtual</h1>
-  <p>
-    Estás explorando la plataforma como <strong>visitante</strong>.
-    Puedes conocer el contenido, pero para acceder a los cursos completos
-    debes convertirte en alumno.
-  </p>
-
-  <!-- VIDEOS BÁSICOS -->
-  <h2>📺 Videos de introducción</h2>
+  <p>Explora la plataforma y conoce cómo funciona</p>
 
   <div class="course-card">
-    <h3>🎓 ¿Cómo funciona la plataforma?</h3>
-    <iframe width="100%" height="200"
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-      frameborder="0" allowfullscreen>
-    </iframe>
+    <h3>📘 ¿Cómo funciona la plataforma?</h3>
+    <video controls width="100%">
+      <source src="https://TU_VIDEO_INTRO.mp4" type="video/mp4">
+    </video>
   </div>
 
   <div class="course-card">
-    <h3>📘 Cómo inscribirte a un curso</h3>
-    <iframe width="100%" height="200"
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-      frameborder="0" allowfullscreen>
-    </iframe>
+    <h3>🔒 Cursos completos</h3>
+    <p>Disponible solo para alumnos</p>
+    <button disabled style="opacity:.5">Acceso restringido</button>
   </div>
 
-  <!-- ACCIONES -->
   <br>
 
-  <button class="primary-btn" id="beStudentBtn">
-    🎓 Volverte alumno
+  <button class="primary-btn" onclick="requestAccess()">
+    🎓 Cómo volverte alumno
   </button>
 
   <br><br>
-
-  <button id="logoutBtn">
-    🚪 Cerrar sesión
-  </button>
-
+  <button id="logoutBtn">Cerrar sesión</button>
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
