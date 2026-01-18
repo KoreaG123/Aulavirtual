@@ -10,6 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const registerBtn = document.getElementById("registerBtn");
   const msg = document.getElementById("message");
 
+  // 🔒 Seguridad básica DOM
+  if (!loginBtn || !googleBtn || !registerBtn) {
+    console.warn("Auth.js cargado en una página sin formulario");
+    return;
+  }
+
   /* =======================
      LOGIN EMAIL / PASSWORD
   ======================= */
@@ -26,9 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     try {
       const cred = await auth.signInWithEmailAndPassword(email, password);
-      redirectByRole(cred.user.uid);
+      await redirectByRole(cred.user.uid);
     } catch (err) {
-      msg.textContent = err.message;
+      msg.textContent = "Correo o contraseña incorrectos";
     }
   });
 
@@ -58,10 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      redirectByRole(user.uid);
+      await redirectByRole(user.uid);
 
     } catch (err) {
-      alert(err.message);
+      alert("Error al iniciar sesión con Google");
     }
   });
 
@@ -89,7 +95,6 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const cred = await auth.createUserWithEmailAndPassword(email, pass);
 
-      // 👉 Usuario nuevo = guest
       await db.collection("users").doc(cred.user.uid).set({
         name,
         email,
@@ -100,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
       location.href = "welcome.html";
 
     } catch (err) {
-      msg.textContent = err.message;
+      msg.textContent = "No se pudo crear la cuenta";
     }
   });
 
@@ -108,22 +113,28 @@ document.addEventListener("DOMContentLoaded", () => {
      REDIRECCIÓN POR ROL
   ======================= */
   async function redirectByRole(uid) {
-    const doc = await db.collection("users").doc(uid).get();
+    try {
+      const doc = await db.collection("users").doc(uid).get();
 
-    if (!doc.exists) {
-      alert("Usuario sin rol");
+      if (!doc.exists) {
+        await auth.signOut();
+        alert("Usuario sin rol asignado");
+        return;
+      }
+
+      const role = doc.data().role;
+
+      if (role === "admin") {
+        location.href = "admin.html";
+      } else if (role === "alumno") {
+        location.href = "dashboard.html";
+      } else {
+        location.href = "welcome.html";
+      }
+
+    } catch (err) {
+      alert("Error al verificar permisos");
       auth.signOut();
-      return;
-    }
-
-    const role = doc.data().role;
-
-    if (role === "admin") {
-      location.href = "admin.html";
-    } else if (role === "alumno") {
-      location.href = "dashboard.html";
-    } else {
-      location.href = "welcome.html";
     }
   }
 
@@ -146,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     auth.sendPasswordResetEmail(email)
       .then(() => alert("Correo enviado"))
-      .catch(err => alert(err.message));
+      .catch(() => alert("No se pudo enviar el correo"));
   };
 
 });
