@@ -2,101 +2,102 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Bienvenido | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <title>Bienvenido | Aula Virtual</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- ====== NAVBAR ====== -->
+  <header class="navbar">
+    <h1>Aula Virtual</h1>
+    <button id="logoutBtn">Cerrar sesión</button>
+  </header>
 
-<div class="dashboard">
-  <h1>👋 Bienvenido al Aula Virtual</h1>
+  <!-- ====== MAIN CONTENT ====== -->
+  <main class="container">
+    <!-- Bienvenida -->
+    <section class="welcome-section">
+      <h2>¡Bienvenido a tu aula virtual!</h2>
+      <p>Estás usando una cuenta <strong>invitado</strong>. Explora los videos básicos y aprende a tu ritmo.</p>
+    </section>
 
-  <p id="welcomeMsg">
-    Estás usando una cuenta <strong>invitado</strong>.
-    Para acceder a los cursos completos debes solicitar acceso.
-  </p>
+    <!-- Videos básicos -->
+    <section class="videos-section">
+      <h3>Videos básicos</h3>
+      <div class="video-cards">
+        <div class="card">
+          <h4>Introducción</h4>
+          <video controls src="videos/intro.mp4"></video>
+        </div>
+        <div class="card">
+          <h4>Primeros pasos</h4>
+          <video controls src="videos/primeros_pasos.mp4"></video>
+        </div>
+        <!-- Agrega más cards según necesites -->
+      </div>
+    </section>
 
-  <div class="card">
-    <h3>📩 Solicitar acceso</h3>
-    <p>Un administrador revisará tu solicitud.</p>
-    <button id="requestBtn" class="primary-btn">Solicitar acceso</button>
-    <p id="statusMsg"></p>
-  </div>
+    <!-- Solicitud de acceso -->
+    <section class="request-section">
+      <button id="requestAccessBtn" class="primary-btn">Cómo volverte alumno</button>
+      <p id="statusMsg"></p>
+    </section>
+  </main>
 
-  <hr>
+  <!-- ====== FOOTER ====== -->
+  <footer>
+    <p>© 2026 Aula Virtual. Todos los derechos reservados.</p>
+  </footer>
 
-  <div class="card locked">
-    <h3>🔒 Cursos Premium</h3>
-    <p>Contenido bloqueado hasta que un administrador apruebe tu cuenta.</p>
-  </div>
+  <!-- ====== FIREBASE ====== -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <br>
-  <button id="logoutBtn">Cerrar sesión</button>
-</div>
+  <script src="js/firebase.js"></script>
+  <script src="js/welcome.js"></script>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- ====== SCRIPT LOCAL ====== -->
+  <script>
+    const logoutBtn = document.getElementById("logoutBtn");
+    const requestBtn = document.getElementById("requestAccessBtn");
+    const statusMsg = document.getElementById("statusMsg");
 
-<script src="js/firebase.js"></script>
+    // Botón cerrar sesión
+    logoutBtn.onclick = async () => {
+      await firebase.auth().signOut();
+      location.href = "index.html";
+    };
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+    // Botón solicitar acceso
+    requestBtn.onclick = () => requestAccess();
 
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+    // ====== CONTROL DE GUEST ======
+    firebase.auth().onAuthStateChanged(async user => {
+      if (!user) return location.href = "index.html";
 
-  const requestBtn = document.getElementById("requestBtn");
-  const statusMsg = document.getElementById("statusMsg");
-  const logoutBtn = document.getElementById("logoutBtn");
+      const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
 
-  auth.onAuthStateChanged(async user => {
-    if (!user) return location.href = "index.html";
+      if (!userDoc.exists) {
+        alert("Usuario no registrado");
+        await firebase.auth().signOut();
+        return location.href = "index.html";
+      }
 
-    const userDoc = await db.collection("users").doc(user.uid).get();
+      const role = userDoc.data().role;
 
-    if (!userDoc.exists) {
-      alert("Usuario no registrado");
-      return auth.signOut();
-    }
+      // Si ya es alumno o admin, redirigir
+      if (role === "alumno") location.href = "dashboard.html";
+      else if (role === "admin") location.href = "admin.html";
+      else if (role === "profesor") location.href = "profesor.html"; // si tienes ese rol
 
-    const role = userDoc.data().role;
-
-    // 🔁 Si ya es alumno o admin, redirigir
-    if (role === "alumno") return location.href = "dashboard.html";
-    if (role === "admin") return location.href = "admin.html";
-
-    // Verificar si ya envió solicitud
-    const req = await db.collection("requests").doc(user.uid).get();
-    if (req.exists) {
-      requestBtn.disabled = true;
-      statusMsg.textContent = "⏳ Solicitud enviada. Esperando aprobación.";
-    }
-  });
-
-  requestBtn.addEventListener("click", async () => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    await db.collection("requests").doc(user.uid).set({
-      uid: user.uid,
-      email: user.email,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-      status: "pending"
+      // Revisar si ya envió solicitud
+      const req = await firebase.firestore().collection("requests").doc(user.uid).get();
+      if (req.exists) {
+        requestBtn.disabled = true;
+        statusMsg.textContent = "⏳ Solicitud enviada. Esperando aprobación.";
+      }
     });
-
-    requestBtn.disabled = true;
-    statusMsg.textContent = "✅ Solicitud enviada correctamente";
-  });
-
-  logoutBtn.onclick = () => {
-    auth.signOut().then(() => location.href = "index.html");
-  };
-
-});
-</script>
-
+  </script>
 </body>
 </html>
