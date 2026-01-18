@@ -4,43 +4,99 @@
   <meta charset="UTF-8">
   <title>Bienvenido | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="dashboard">
-  <h1>👋 Bienvenido a Aula Virtual</h1>
-  <p>Explora la plataforma y conoce cómo funciona</p>
+  <h1>👋 Bienvenido al Aula Virtual</h1>
 
-  <div class="course-card">
-    <h3>📘 ¿Cómo funciona la plataforma?</h3>
-    <video controls width="100%">
-      <source src="https://TU_VIDEO_INTRO.mp4" type="video/mp4">
-    </video>
+  <p id="welcomeMsg">
+    Estás usando una cuenta <strong>invitado</strong>.
+    Para acceder a los cursos completos debes solicitar acceso.
+  </p>
+
+  <div class="card">
+    <h3>📩 Solicitar acceso</h3>
+    <p>Un administrador revisará tu solicitud.</p>
+    <button id="requestBtn" class="primary-btn">Solicitar acceso</button>
+    <p id="statusMsg"></p>
   </div>
 
-  <div class="course-card">
-    <h3>🔒 Cursos completos</h3>
-    <p>Disponible solo para alumnos</p>
-    <button disabled style="opacity:.5">Acceso restringido</button>
+  <hr>
+
+  <div class="card locked">
+    <h3>🔒 Cursos Premium</h3>
+    <p>Contenido bloqueado hasta que un administrador apruebe tu cuenta.</p>
   </div>
 
   <br>
-
-  <button class="primary-btn" onclick="requestAccess()">
-    🎓 Cómo volverte alumno
-  </button>
-
-  <br><br>
   <button id="logoutBtn">Cerrar sesión</button>
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="js/firebase.js"></script>
-<script src="js/welcome.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  const requestBtn = document.getElementById("requestBtn");
+  const statusMsg = document.getElementById("statusMsg");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  auth.onAuthStateChanged(async user => {
+    if (!user) return location.href = "index.html";
+
+    const userDoc = await db.collection("users").doc(user.uid).get();
+
+    if (!userDoc.exists) {
+      alert("Usuario no registrado");
+      return auth.signOut();
+    }
+
+    const role = userDoc.data().role;
+
+    // 🔁 Si ya es alumno o admin, redirigir
+    if (role === "alumno") return location.href = "dashboard.html";
+    if (role === "admin") return location.href = "admin.html";
+
+    // Verificar si ya envió solicitud
+    const req = await db.collection("requests").doc(user.uid).get();
+    if (req.exists) {
+      requestBtn.disabled = true;
+      statusMsg.textContent = "⏳ Solicitud enviada. Esperando aprobación.";
+    }
+  });
+
+  requestBtn.addEventListener("click", async () => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    await db.collection("requests").doc(user.uid).set({
+      uid: user.uid,
+      email: user.email,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      status: "pending"
+    });
+
+    requestBtn.disabled = true;
+    statusMsg.textContent = "✅ Solicitud enviada correctamente";
+  });
+
+  logoutBtn.onclick = () => {
+    auth.signOut().then(() => location.href = "index.html");
+  };
+
+});
+</script>
 
 </body>
 </html>
