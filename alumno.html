@@ -4,16 +4,20 @@
   <meta charset="UTF-8">
   <title>Panel Alumno | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>🎒 Panel Alumno</h1>
-<p>Cursos disponibles</p>
+<div class="dashboard">
+  <h1>🎓 Panel Alumno</h1>
+  <p>Cursos disponibles</p>
 
-<ul id="coursesList"></ul>
+  <div id="coursesList"></div>
 
-<br>
-<button id="logoutBtn">Cerrar sesión</button>
+  <br>
+  <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
+</div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
