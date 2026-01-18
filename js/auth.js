@@ -126,9 +126,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (role === "admin") {
         location.href = "admin.html";
-      } else if (role === "alumno") {
+      } 
+      else if (role === "profesor") {
+        location.href = "profesor.html";
+      } 
+      else if (role === "alumno") {
         location.href = "dashboard.html";
-      } else {
+      } 
+      else {
         location.href = "welcome.html";
       }
 
