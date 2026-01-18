@@ -4,27 +4,26 @@
   <meta charset="UTF-8">
   <title>Panel Profesor | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="dashboard">
-  <h1>📚 Panel Profesor</h1>
-  <p>Crear y gestionar tus cursos</p>
+  <h1>👨‍🏫 Panel Profesor</h1>
+  <p>Crea y gestiona tus cursos</p>
 
-  <h3>➕ Nuevo curso</h3>
+  <h3>➕ Nuevo Curso</h3>
 
   <input id="title" placeholder="Título del curso"><br><br>
-  <input id="description" placeholder="Descripción corta"><br><br>
-  <input id="videoUrl" placeholder="Link del video (YouTube o mp4)"><br><br>
+  <textarea id="description" placeholder="Descripción"></textarea><br><br>
+  <input id="videoUrl" placeholder="URL del video"><br><br>
 
   <button id="createBtn" class="primary-btn">Crear curso</button>
 
-  <hr>
+  <hr><br>
 
-  <h3>📋 Mis cursos</h3>
-  <div id="coursesList"></div>
+  <h3>📚 Mis Cursos</h3>
+  <div id="myCourses"></div>
 
   <br>
   <button id="logoutBtn" class="primary-btn">Cerrar sesión</button>
