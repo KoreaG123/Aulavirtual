@@ -3,14 +3,13 @@ console.log("PROFESOR JS CARGADO");
 document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
-  const storage = firebase.storage();
 
   const title = document.getElementById("title");
-  const desc = document.getElementById("description");
-  const videoInput = document.getElementById("video");
+  const description = document.getElementById("description");
+  const videoUrl = document.getElementById("videoUrl");
   const list = document.getElementById("coursesList");
 
-  auth.onAuthStateChanged(async (user) => {
+  auth.onAuthStateChanged(async user => {
     if (!user) return location.href = "index.html";
 
     const me = await db.collection("users").doc(user.uid).get();
@@ -20,45 +19,54 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     loadCourses(user.uid);
+
+    document.getElementById("createBtn").onclick = () =>
+      createCourse(user.uid);
   });
 
-  document.getElementById("createCourse").onclick = async () => {
-    const file = videoInput.files[0];
-    if (!file) return alert("Selecciona un video");
-
-    const user = auth.currentUser;
-
-    const ref = storage.ref(`videos/${user.uid}/${Date.now()}_${file.name}`);
-    await ref.put(file);
-    const videoUrl = await ref.getDownloadURL();
+  async function createCourse(uid) {
+    if (!title.value || !description.value || !videoUrl.value) {
+      alert("Completa todos los campos");
+      return;
+    }
 
     await db.collection("courses").add({
       title: title.value,
-      description: desc.value,
-      videoUrl,
-      createdBy: user.uid,
+      description: description.value,
+      videoUrl: videoUrl.value,
+      createdBy: uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
     title.value = "";
-    desc.value = "";
-    videoInput.value = "";
+    description.value = "";
+    videoUrl.value = "";
 
-    loadCourses(user.uid);
-  };
+    loadCourses(uid);
+  }
 
   async function loadCourses(uid) {
     list.innerHTML = "";
-    const snap = await db.collection("courses")
-      .where("createdBy", "==", uid).get();
 
-    snap.forEach(doc => {
+    const snapshot = await db
+      .collection("courses")
+      .where("createdBy", "==", uid)
+      .get();
+
+    if (snapshot.empty) {
+      list.innerHTML = "<p>No tienes cursos creados</p>";
+      return;
+    }
+
+    snapshot.forEach(doc => {
       const c = doc.data();
+
       list.innerHTML += `
-        <li>
-          <strong>${c.title}</strong><br>
-          <video src="${c.videoUrl}" controls width="300"></video>
-        </li>
+        <div class="course-card">
+          <h4>${c.title}</h4>
+          <p>${c.description}</p>
+        </div>
+        <hr>
       `;
     });
   }
