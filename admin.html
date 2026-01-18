@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <title>Panel Administrador | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <div class="dashboard">
   <h1>🛠️ Panel Administrador</h1>
-  <p>Gestión de usuarios y cursos</p>
+  <p>Gestión de usuarios, cursos y solicitudes</p>
 
+  <!-- USUARIOS -->
   <h3>👥 Usuarios</h3>
-  <table border="1" width="100%">
+  <table width="100%">
     <thead>
       <tr>
         <th>Nombre</th>
@@ -27,6 +27,13 @@
 
   <hr>
 
+  <!-- SOLICITUDES -->
+  <h3>📝 Solicitudes para ser alumno</h3>
+  <div id="requestsList"></div>
+
+  <hr>
+
+  <!-- CURSOS -->
   <h3>📚 Cursos</h3>
   <div id="coursesTable"></div>
 
