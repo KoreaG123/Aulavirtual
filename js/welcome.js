@@ -1,28 +1,22 @@
-console.log("WELCOME JS CARGADO");
+window.requestAccess = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
 
-const auth = firebase.auth();
-const db = firebase.firestore();
+  const ref = db.collection("requests").doc(user.uid);
+  const snap = await ref.get();
 
-auth.onAuthStateChanged(async user => {
-  if (!user) {
-    location.href = "index.html";
+  if (snap.exists) {
+    alert("Ya enviaste una solicitud. Espera aprobación.");
     return;
   }
 
-  const doc = await db.collection("users").doc(user.uid).get();
+  await ref.set({
+    uid: user.uid,
+    email: user.email,
+    name: user.displayName || "Usuario",
+    status: "pending",
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
 
-  if (!doc.exists || doc.data().role !== "guest") {
-    location.href = "dashboard.html";
-    return;
-  }
-});
-
-document.getElementById("logoutBtn").onclick = () => {
-  auth.signOut().then(() => location.href = "index.html");
-};
-
-window.requestAccess = () => {
-  alert(
-    "Para convertirte en alumno, contacta al administrador o adquiere un plan."
-  );
+  alert("✅ Solicitud enviada. Te avisaremos cuando seas alumno.");
 };
