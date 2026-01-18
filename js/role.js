@@ -1,22 +1,49 @@
+console.log("ROLE JS CARGADO");
+
 document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
 
-  auth.onAuthStateChanged(async (user) => {
+  auth.onAuthStateChanged(async user => {
+
+    // ❌ No logueado
     if (!user) {
-      location.href = "index.html";
-      return;
+      return location.href = "index.html";
     }
 
-    const doc = await db.collection("users").doc(user.uid).get();
+    const snap = await db.collection("users").doc(user.uid).get();
 
-    if (!doc.exists) {
-      await auth.signOut();
-      location.href = "index.html";
-      return;
+    if (!snap.exists) {
+      alert("Usuario sin permisos");
+      return auth.signOut();
     }
 
-    // ✅ SOLO validar sesión
-    // ❌ NO redirigir aquí
+    const role = snap.data().role;
+    const page = window.location.pathname;
+
+    /* ======================
+       PROTECCIÓN POR ROL
+    ====================== */
+
+    // GUEST
+    if (role === "guest") {
+      if (!page.includes("welcome.html")) {
+        return location.href = "welcome.html";
+      }
+    }
+
+    // ALUMNO
+    if (role === "alumno") {
+      if (page.includes("admin.html")) {
+        return location.href = "dashboard.html";
+      }
+    }
+
+    // ADMIN
+    if (role === "admin") {
+      // acceso total
+    }
+
+    console.log("Acceso permitido:", role);
   });
 });
