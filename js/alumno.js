@@ -38,33 +38,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     snapshot.forEach(doc => {
       const c = doc.data();
-
-      const title = c.title || "Curso sin título";
-      const videoUrl = c.videoUrl || "";
+      const courseId = doc.id;
 
       list.innerHTML += `
         <div class="course-card">
-          <h3>${title}</h3>
+          <h3>${c.title || "Curso sin título"}</h3>
 
-          ${
-            videoUrl
-              ? `<button class="primary-btn" onclick="watchVideo('${videoUrl}')">
-                   Ver curso
-                 </button>`
-              : `<p>Video no disponible</p>`
-          }
+          <button class="primary-btn" onclick="watchCourse('${courseId}')">
+            ▶ Ver curso
+          </button>
         </div>
         <hr>
       `;
     });
   }
 
-  // 👉 Redirige al reproductor
-  window.watchVideo = (videoUrl) => {
-    location.href = `watch.html?video=${encodeURIComponent(videoUrl)}`;
+  // 👉 Ir al reproductor seguro
+  window.watchCourse = (courseId) => {
+    location.href = `watch.html?course=${courseId}`;
   };
 
-  // 👉 Logout
+  // 👉 Cerrar sesión
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => {
       location.href = "index.html";
