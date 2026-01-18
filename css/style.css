@@ -1,4 +1,6 @@
-/* RESET */
+/* =========================
+   RESET
+========================= */
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +8,9 @@
   font-family: "Segoe UI", system-ui, sans-serif;
 }
 
-/* BODY */
+/* =========================
+   BODY
+========================= */
 body {
   background: linear-gradient(135deg, #0f172a, #020617);
   min-height: 100vh;
@@ -14,7 +18,9 @@ body {
   padding: 20px;
 }
 
-/* DASHBOARD */
+/* =========================
+   DASHBOARD (ADMIN / PROF / ALUMNO)
+========================= */
 .dashboard {
   max-width: 900px;
   margin: auto;
@@ -24,7 +30,6 @@ body {
   box-shadow: 0 20px 40px rgba(0,0,0,.5);
 }
 
-/* TITLES */
 .dashboard h1 {
   font-size: 2rem;
   margin-bottom: 8px;
@@ -35,7 +40,9 @@ body {
   margin-bottom: 20px;
 }
 
-/* BUTTONS */
+/* =========================
+   BOTONES
+========================= */
 .primary-btn,
 button {
   background: linear-gradient(135deg, #6366f1, #22d3ee);
@@ -53,7 +60,9 @@ button:hover {
   opacity: .9;
 }
 
-/* COURSE CARDS */
+/* =========================
+   COURSE CARDS
+========================= */
 .course-card {
   background: #020617;
   border: 1px solid #1e293b;
@@ -66,7 +75,9 @@ button:hover {
   margin-bottom: 12px;
 }
 
-/* TABLE */
+/* =========================
+   TABLE
+========================= */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -83,7 +94,9 @@ th {
   background: #020617;
 }
 
-/* SELECT */
+/* =========================
+   SELECT
+========================= */
 select {
   background: #020617;
   color: #e5e7eb;
@@ -92,22 +105,12 @@ select {
   border-radius: 6px;
 }
 
-/* RESPONSIVE */
-@media (max-width: 600px) {
-  .dashboard {
-    padding: 20px;
-  }
-
-  table {
-    font-size: 14px;
-  }
-}
-/* ===== LOGIN / AUTH ===== */
-
+/* =========================
+   LOGIN / AUTH
+========================= */
 .container {
   max-width: 420px;
   margin: 40px auto;
-  padding: 20px;
 }
 
 .header-message {
@@ -162,7 +165,6 @@ select {
   display: block;
   font-size: 0.85rem;
   margin-bottom: 4px;
-  color: #cbd5f5;
 }
 
 .input-group input {
@@ -234,4 +236,17 @@ select {
 .message {
   margin-top: 12px;
   text-align: center;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 600px) {
+  .dashboard {
+    padding: 20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
 }
