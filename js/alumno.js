@@ -47,9 +47,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.watch = (url) => {
-    window.open(url, "_blank");
-  };
+  window.watch = (courseId) => {
+  location.href = `watch.html?course=${courseId}`;
+};
 
   document.getElementById("logoutBtn").onclick = () => {
     auth.signOut().then(() => location.href = "index.html");
