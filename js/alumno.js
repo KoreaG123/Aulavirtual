@@ -3,14 +3,10 @@ console.log("ALUMNO JS CARGADO");
 document.addEventListener("DOMContentLoaded", () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
-  const container = document.getElementById("coursesList");
-
-  let currentUser = null;
+  const list = document.getElementById("coursesList");
 
   auth.onAuthStateChanged(async (user) => {
     if (!user) return location.href = "index.html";
-
-    currentUser = user;
 
     const me = await db.collection("users").doc(user.uid).get();
     if (!me.exists || me.data().role !== "alumno") {
@@ -18,29 +14,32 @@ document.addEventListener("DOMContentLoaded", () => {
       return location.href = "index.html";
     }
 
-    loadCourses();
+    loadMyCourses(user.uid);
   });
 
-  async function loadCourses() {
-    container.innerHTML = "";
+  async function loadMyCourses(uid) {
+    list.innerHTML = "";
 
-    const snapshot = await db.collection("courses").get();
+    const snapshot = await db
+      .collection("users")
+      .doc(uid)
+      .collection("enrolledCourses")
+      .get();
 
     if (snapshot.empty) {
-      container.innerHTML = "<p>No hay cursos disponibles</p>";
+      list.innerHTML = "<p>No estás inscrito en ningún curso</p>";
       return;
     }
 
     snapshot.forEach(doc => {
       const c = doc.data();
 
-      container.innerHTML += `
+      list.innerHTML += `
         <div class="course-card">
           <h3>${c.title}</h3>
-          <p>${c.description}</p>
 
-          <button onclick="enroll('${doc.id}')">
-            Inscribirme
+          <button onclick="watch('${c.videoUrl}')">
+            Ver curso
           </button>
         </div>
         <hr>
@@ -48,21 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.enroll = async (courseId) => {
-    const courseDoc = await db.collection("courses").doc(courseId).get();
-    if (!courseDoc.exists) return alert("Curso no existe");
-
-    await db.collection("users")
-      .doc(currentUser.uid)
-      .collection("enrolledCourses")
-      .doc(courseId)
-      .set({
-        title: courseDoc.data().title,
-        videoUrl: courseDoc.data().videoUrl,
-        enrolledAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-
-    alert("Inscripción exitosa");
+  window.watch = (url) => {
+    window.open(url, "_blank");
   };
 
   document.getElementById("logoutBtn").onclick = () => {
