@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Ver Curso | Aula Virtual</title>
+  <title>Reproduciendo curso | Aula Virtual</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="css/style.css">
@@ -10,74 +10,24 @@
 <body>
 
 <div class="dashboard">
-  <h1>🎬 Reproductor del Curso</h1>
-  <p>Disfruta tu clase</p>
+  <h1 id="courseTitle">📺 Reproduciendo curso</h1>
 
-  <div id="videoContainer" style="margin-top:20px;"></div>
+  <video id="videoPlayer" controls width="100%" style="max-width:800px;">
+    Tu navegador no soporta video.
+  </video>
 
-  <br>
-  <button id="backBtn" class="primary-btn">⬅ Volver a mis cursos</button>
+  <br><br>
+  <button onclick="history.back()" class="primary-btn">⬅ Volver</button>
 </div>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
 <script src="js/firebase.js"></script>
-
-<script>
-  const auth = firebase.auth();
-
-  auth.onAuthStateChanged(user => {
-    if (!user) {
-      location.href = "index.html";
-      return;
-    }
-
-    loadVideo();
-  });
-
-  function loadVideo() {
-    const params = new URLSearchParams(window.location.search);
-    const videoUrl = params.get("video");
-
-    if (!videoUrl) {
-      document.getElementById("videoContainer").innerHTML =
-        "<p>❌ Video no disponible</p>";
-      return;
-    }
-
-    // Detectar si es YouTube
-    if (videoUrl.includes("youtube.com") || videoUrl.includes("youtu.be")) {
-      const embedUrl = videoUrl
-        .replace("watch?v=", "embed/")
-        .replace("youtu.be/", "youtube.com/embed/");
-
-      document.getElementById("videoContainer").innerHTML = `
-        <iframe
-          width="100%"
-          height="400"
-          src="${embedUrl}"
-          frameborder="0"
-          allowfullscreen>
-        </iframe>
-      `;
-    } 
-    // Video normal (mp4, Firebase Storage, etc)
-    else {
-      document.getElementById("videoContainer").innerHTML = `
-        <video controls width="100%" height="400">
-          <source src="${videoUrl}" type="video/mp4">
-          Tu navegador no soporta video.
-        </video>
-      `;
-    }
-  }
-
-  document.getElementById("backBtn").onclick = () => {
-    location.href = "alumno.html";
-  };
-</script>
+<script src="js/role.js"></script>
+<script src="js/watch.js"></script>
 
 </body>
 </html>
