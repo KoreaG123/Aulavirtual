@@ -1,50 +1,38 @@
 console.log("WATCH JS CARGADO");
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const auth = firebase.auth();
   const db = firebase.firestore();
+  const player = document.getElementById("videoPlayer");
 
   const params = new URLSearchParams(window.location.search);
-  const courseId = params.get("course");
+  const videoUrl = params.get("video");
 
-  const video = document.getElementById("videoPlayer");
-  const title = document.getElementById("courseTitle");
-
-  if (!courseId) {
-    alert("Curso no válido");
-    location.href = "alumno.html";
-    return;
+  if (!videoUrl) {
+    alert("Video no disponible");
+    return location.href = "alumno.html";
   }
 
   auth.onAuthStateChanged(async (user) => {
-    if (!user) return location.href = "index.html";
-
-    const me = await db.collection("users").doc(user.uid).get();
-    if (!me.exists || me.data().role !== "alumno") {
-      alert("Acceso denegado");
-      return location.href = "index.html";
-    }
-
-    loadCourse(user.uid, courseId);
-  });
-
-  async function loadCourse(uid, courseId) {
-    const doc = await db
-      .collection("users")
-      .doc(uid)
-      .collection("enrolledCourses")
-      .doc(courseId)
-      .get();
-
-    if (!doc.exists) {
-      alert("No tienes acceso a este curso");
-      location.href = "alumno.html";
+    if (!user) {
+      location.href = "index.html";
       return;
     }
 
-    const data = doc.data();
+    const me = await db.collection("users").doc(user.uid).get();
 
-    title.innerText = `📺 ${data.title}`;
-    video.src = data.videoUrl;
-  }
+    if (!me.exists || me.data().role !== "alumno") {
+      alert("Acceso denegado");
+      location.href = "index.html";
+      return;
+    }
+
+    // 🔥 Reproducir video
+    player.src = videoUrl;
+  });
 });
+
+// 👉 Volver
+function goBack() {
+  location.href = "alumno.html";
+}
