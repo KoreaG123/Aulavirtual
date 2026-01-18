@@ -11,14 +11,17 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
   const password = document.getElementById("loginPassword").value.trim();
   const msg = document.getElementById("message");
 
+  msg.textContent = "";
+
   if (!email || !password) {
     msg.textContent = "Completa todos los campos";
     return;
   }
 
   try {
-    const cred = await auth.signInWithEmailAndPassword(email, password);
-    await redirectByRole(cred.user);
+    await auth.signInWithEmailAndPassword(email, password);
+    // ✅ SIEMPRE ir al dashboard
+    location.href = "dashboard.html";
   } catch (err) {
     msg.textContent = err.message;
   }
@@ -32,21 +35,12 @@ document.getElementById("googleBtn").addEventListener("click", async () => {
 
   try {
     const result = await auth.signInWithPopup(provider);
-    await redirectByRole(result.user);
-  } catch (err) {
-    alert(err.message);
-  }
-});
+    const user = result.user;
 
-/* =======================
-   REDIRECCIÓN POR ROL
-======================= */
-async function redirectByRole(user) {
-  try {
     const ref = db.collection("users").doc(user.uid);
     const doc = await ref.get();
 
-    // 👉 SI NO EXISTE, CREAR USUARIO POR DEFECTO
+    // 👉 crear usuario si no existe
     if (!doc.exists) {
       await ref.set({
         name: user.displayName || "Alumno",
@@ -54,25 +48,14 @@ async function redirectByRole(user) {
         role: "alumno",
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-
-      location.href = "alumno.html";
-      return;
     }
 
-    const role = doc.data().role;
+    location.href = "dashboard.html";
 
-    if (role === "admin") {
-      location.href = "admin.html";
-    } else if (role === "profesor") {
-      location.href = "prof.html";
-    } else {
-      location.href = "alumno.html";
-    }
-
-  } catch (error) {
-    alert("Error al redirigir: " + error.message);
+  } catch (err) {
+    alert(err.message);
   }
-}
+});
 
 /* =======================
    REGISTRO
@@ -83,6 +66,8 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   const pass = document.getElementById("registerPassword").value.trim();
   const pass2 = document.getElementById("registerPasswordConfirm").value.trim();
   const msg = document.getElementById("message");
+
+  msg.textContent = "";
 
   if (!name || !email || !pass || !pass2) {
     msg.textContent = "Completa todos los campos";
@@ -104,7 +89,8 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
-    location.href = "alumno.html";
+    location.href = "dashboard.html";
+
   } catch (err) {
     msg.textContent = err.message;
   }
