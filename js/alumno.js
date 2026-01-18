@@ -6,12 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const list = document.getElementById("coursesList");
 
   auth.onAuthStateChanged(async (user) => {
-    if (!user) return location.href = "index.html";
+    if (!user) {
+      location.href = "index.html";
+      return;
+    }
 
     const me = await db.collection("users").doc(user.uid).get();
+
     if (!me.exists || me.data().role !== "alumno") {
       alert("Acceso denegado");
-      return location.href = "index.html";
+      location.href = "index.html";
+      return;
     }
 
     loadMyCourses(user.uid);
@@ -34,24 +39,35 @@ document.addEventListener("DOMContentLoaded", () => {
     snapshot.forEach(doc => {
       const c = doc.data();
 
+      const title = c.title || "Curso sin título";
+      const videoUrl = c.videoUrl || "";
+
       list.innerHTML += `
         <div class="course-card">
-          <h3>${c.title}</h3>
+          <h3>${title}</h3>
 
-          <button onclick="watch('${c.videoUrl}')">
-            Ver curso
-          </button>
+          ${
+            videoUrl
+              ? `<button class="primary-btn" onclick="watchVideo('${videoUrl}')">
+                   Ver curso
+                 </button>`
+              : `<p>Video no disponible</p>`
+          }
         </div>
         <hr>
       `;
     });
   }
 
-  window.watch = (courseId) => {
-  location.href = `watch.html?course=${courseId}`;
-};
+  // 👉 Redirige al reproductor
+  window.watchVideo = (videoUrl) => {
+    location.href = `watch.html?video=${encodeURIComponent(videoUrl)}`;
+  };
 
+  // 👉 Logout
   document.getElementById("logoutBtn").onclick = () => {
-    auth.signOut().then(() => location.href = "index.html");
+    auth.signOut().then(() => {
+      location.href = "index.html";
+    });
   };
 });
