@@ -3,9 +3,9 @@ console.log("AUTH JS CARGADO");
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// =======================
-// LOGIN EMAIL / PASSWORD
-// =======================
+/* =======================
+   LOGIN EMAIL / PASSWORD
+======================= */
 document.getElementById("loginBtn").addEventListener("click", async () => {
   const email = document.getElementById("loginUsername").value.trim();
   const password = document.getElementById("loginPassword").value.trim();
@@ -18,65 +18,65 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
 
   try {
     const cred = await auth.signInWithEmailAndPassword(email, password);
-    redirectByRole(cred.user.uid);
+    await redirectByRole(cred.user);
   } catch (err) {
     msg.textContent = err.message;
   }
 });
 
-// =======================
-// LOGIN GOOGLE
-// =======================
+/* =======================
+   LOGIN GOOGLE
+======================= */
 document.getElementById("googleBtn").addEventListener("click", async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
 
   try {
     const result = await auth.signInWithPopup(provider);
-    const user = result.user;
-
-    const ref = db.collection("users").doc(user.uid);
-    const snap = await ref.get();
-
-    if (!snap.exists) {
-      await ref.set({
-        name: user.displayName,
-        email: user.email,
-        role: "alumno",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-
-    redirectByRole(user.uid);
+    await redirectByRole(result.user);
   } catch (err) {
     alert(err.message);
   }
 });
 
-// =======================
-// REDIRECCIÓN POR ROL
-// =======================
-async function redirectByRole(uid) {
-  const doc = await db.collection("users").doc(uid).get();
+/* =======================
+   REDIRECCIÓN POR ROL
+======================= */
+async function redirectByRole(user) {
+  try {
+    const ref = db.collection("users").doc(user.uid);
+    const doc = await ref.get();
 
-  if (!doc.exists) {
-    alert("Usuario sin rol asignado");
-    return;
-  }
+    // 👉 SI NO EXISTE, CREAR USUARIO POR DEFECTO
+    if (!doc.exists) {
+      await ref.set({
+        name: user.displayName || "Alumno",
+        email: user.email,
+        role: "alumno",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
 
-  const role = doc.data().role;
+      location.href = "alumno.html";
+      return;
+    }
 
-  if (role === "admin") {
-    location.href = "admin.html";
-  } else if (role === "profesor") {
-    location.href = "prof.html";
-  } else {
-    location.href = "alumno.html";
+    const role = doc.data().role;
+
+    if (role === "admin") {
+      location.href = "admin.html";
+    } else if (role === "profesor") {
+      location.href = "prof.html";
+    } else {
+      location.href = "alumno.html";
+    }
+
+  } catch (error) {
+    alert("Error al redirigir: " + error.message);
   }
 }
 
-// =======================
-// REGISTRO
-// =======================
+/* =======================
+   REGISTRO
+======================= */
 document.getElementById("registerBtn").addEventListener("click", async () => {
   const name = document.getElementById("registerName").value.trim();
   const email = document.getElementById("registerEmail").value.trim();
@@ -110,9 +110,9 @@ document.getElementById("registerBtn").addEventListener("click", async () => {
   }
 });
 
-// =======================
-// UI HELPERS
-// =======================
+/* =======================
+   UI HELPERS
+======================= */
 window.showRegister = () => {
   document.getElementById("loginForm").classList.remove("active");
   document.getElementById("registerForm").classList.add("active");
