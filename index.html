@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,7 +24,6 @@
 
     <!-- LOGIN -->
     <div id="loginForm" class="form-section active">
-
       <div class="input-group">
         <label>Correo electrónico</label>
         <input type="email" id="loginUsername" required>
@@ -47,35 +45,30 @@
 
       <div class="google-login">
         <button id="googleBtn" class="google-btn">
-          <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="google-icon">
-          <span>Continuar con Google</span>
+          <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="google-icon-small">
+          <span>Google</span>
         </button>
       </div>
 
       <div class="register-link">
-        ¿No tienes cuenta?
-        <a href="#" onclick="showRegister();return false;">Registrarse</a>
+        ¿No tienes cuenta? <a href="#" onclick="showRegister();return false;">Registrarse</a>
       </div>
     </div>
 
     <!-- REGISTRO -->
     <div id="registerForm" class="form-section">
-
       <div class="input-group">
         <label>Nombre completo</label>
         <input type="text" id="registerName">
       </div>
-
       <div class="input-group">
         <label>Correo electrónico</label>
         <input type="email" id="registerEmail">
       </div>
-
       <div class="input-group">
         <label>Contraseña</label>
         <input type="password" id="registerPassword">
       </div>
-
       <div class="input-group">
         <label>Confirmar contraseña</label>
         <input type="password" id="registerPasswordConfirm">
@@ -84,13 +77,11 @@
       <button id="registerBtn" class="primary-btn">Crear cuenta</button>
 
       <div class="register-link">
-        ¿Ya tienes cuenta?
-        <a href="#" onclick="showLogin();return false;">Iniciar sesión</a>
+        ¿Ya tienes cuenta? <a href="#" onclick="showLogin();return false;">Iniciar sesión</a>
       </div>
     </div>
 
     <div id="message" class="message"></div>
-
   </div>
 </div>
 
@@ -107,52 +98,6 @@ function togglePassword() {
   const input = document.getElementById("loginPassword");
   input.type = input.type === "password" ? "text" : "password";
 }
-
-// 🔒 Después del login, redirige siempre a dashboard.html
-document.getElementById("loginBtn").addEventListener("click", async () => {
-  const email = document.getElementById("loginUsername").value.trim();
-  const password = document.getElementById("loginPassword").value.trim();
-  const msg = document.getElementById("message");
-  msg.textContent = "";
-
-  if (!email || !password) {
-    msg.textContent = "Completa todos los campos";
-    return;
-  }
-
-  try {
-    await firebase.auth().signInWithEmailAndPassword(email, password);
-    location.href = "dashboard.html";
-  } catch (err) {
-    msg.textContent = "Correo o contraseña incorrectos";
-  }
-});
-
-// 🔒 Login con Google siempre a dashboard.html
-document.getElementById("googleBtn").addEventListener("click", async () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  try {
-    const result = await firebase.auth().signInWithPopup(provider);
-    const user = result.user;
-
-    const ref = firebase.firestore().collection("users").doc(user.uid);
-    const snap = await ref.get();
-
-    if (!snap.exists) {
-      await ref.set({
-        name: user.displayName || "Usuario",
-        email: user.email,
-        role: "guest",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    }
-
-    location.href = "dashboard.html";
-  } catch (err) {
-    alert("Error al iniciar sesión con Google");
-  }
-});
 </script>
-
 </body>
 </html>
