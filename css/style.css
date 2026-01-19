@@ -5,17 +5,18 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Segoe UI", system-ui, sans-serif;
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
 }
 
 /* =========================
    BODY
 ========================= */
 body {
-  background: #0f172a; /* fondo oscuro elegante */
-  color: #e5e7eb; /* texto claro */
+  background: linear-gradient(135deg, #667eea, #764ba2);
   min-height: 100vh;
-  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  color: #333;
 }
 
 /* =========================
@@ -25,72 +26,88 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
-  color: #fff;
   padding: 1rem 2rem;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  background: rgba(255,255,255,0.95);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
   position: sticky;
   top: 0;
   z-index: 100;
 }
 
 .navbar h1 {
-  font-size: 1.8rem;
+  font-size: 1.6rem;
+  color: #667eea;
   font-weight: 700;
 }
 
 .navbar button {
-  background: #fff;
-  color: #4f46e5;
+  background: #667eea;
+  color: #fff;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
 .navbar button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
+  background: #5568d3;
+  transform: translateY(-2px);
 }
 
 /* =========================
-   CONTAINER PRINCIPAL
+   CONTAINER
 ========================= */
 .container {
-  max-width: 1000px;
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
   margin: 2rem auto;
   padding: 0 1rem;
 }
 
 /* =========================
-   SECCIONES DE BIENVENIDA
+   LOADING
+========================= */
+.loading {
+  text-align: center;
+  padding: 3rem;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+/* =========================
+   WELCOME SECTION (GUEST)
 ========================= */
 .welcome-section {
   text-align: center;
-  margin-bottom: 2.5rem;
-  animation: fadeIn 1s ease forwards;
+  background: rgba(255,255,255,0.9);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
 }
 
 .welcome-section h2 {
-  font-size: 2.4rem;
-  margin-bottom: 0.5rem;
-  color: #fff;
+  color: #667eea;
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
 }
 
 .welcome-section p {
-  font-size: 1.1rem;
-  color: #94a3b8;
+  color: #555;
+  font-size: 1rem;
 }
 
 /* =========================
    VIDEOS
 ========================= */
 .videos-section h3 {
-  margin-bottom: 1rem;
-  font-size: 1.8rem;
+  font-size: 1.4rem;
   color: #fff;
+  margin-bottom: 1rem;
 }
 
 .video-cards {
@@ -99,98 +116,123 @@ body {
   gap: 1.5rem;
 }
 
-.card {
-  background: #1e293b;
+.video-cards .card {
+  background: #fff;
+  border-radius: 12px;
   padding: 1rem;
-  border-radius: 16px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-  transition: all 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.video-cards .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.video-cards .card h4 {
+  color: #667eea;
+  margin-bottom: 0.5rem;
+}
+
+.video-cards .card video {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* =========================
+   REQUEST SECTION
+========================= */
+.request-section {
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  text-align: center;
+  padding: 2rem;
+  margin-top: 2rem;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.request-section h3 {
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.primary-btn {
+  background: #667eea;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  overflow: hidden;
+  transition: all 0.3s;
 }
 
-.card:hover {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+.primary-btn:hover:not(:disabled) {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(102,126,234,0.4);
 }
 
-.card h4 {
+.primary-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+#statusMsg {
+  margin-top: 1rem;
+  font-weight: 600;
+  color: #667eea;
+}
+
+/* =========================
+   DASHBOARD CARDS
+========================= */
+.dashboard h1 {
+  font-size: 1.8rem;
   margin-bottom: 0.5rem;
   color: #fff;
 }
 
-.card video {
-  width: 100%;
-  border-radius: 10px;
-  transition: transform 0.3s ease;
+.dashboard > p {
+  color: #eee;
+  margin-bottom: 2rem;
+  font-weight: 500;
 }
 
-.card:hover video {
-  transform: scale(1.03);
-}
-
-/* =========================
-   BOTONES
-========================= */
-.primary-btn,
-button {
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.3s ease;
-}
-
-.request-section button {
-  background: linear-gradient(135deg, #6366f1, #22d3ee);
+.stats-section h2, .quick-access-section h3 {
   color: #fff;
-  border: none;
-  padding: 1rem 2rem;
+  margin-bottom: 1rem;
+}
+
+.stats-cards, .quick-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.stats-cards .card, .quick-cards .card {
+  background: rgba(255,255,255,0.95);
   border-radius: 12px;
-  font-size: 1rem;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
-.request-section button:hover {
-  transform: scale(1.05);
-  opacity: 0.9;
-}
-
-/* =========================
-   DASHBOARD / WELCOME CARD
-========================= */
-.dashboard {
-  max-width: 1000px;
-  margin: 2rem auto;
-  background: #1e293b;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-  animation: fadeIn 1s ease forwards;
-}
-
-.dashboard h1 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
-.dashboard p {
-  color: #94a3b8;
-  margin-bottom: 1rem;
-}
-
-.card.locked {
-  background: #111827;
-  border: 1px solid #334155;
-  text-align: center;
   padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* =========================
-   STATUS / MENSAJES
-========================= */
-#statusMsg {
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
-  color: #38bdf8;
+.stats-cards .card:hover, .quick-cards .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.stats-cards .card h4, .quick-cards .card h4 {
+  margin-bottom: 0.5rem;
+  color: #667eea;
+}
+
+.stats-cards .card p:first-of-type {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
 }
 
 /* =========================
@@ -198,70 +240,23 @@ button {
 ========================= */
 footer {
   text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
-  background: #111827;
-  color: #94a3b8;
+  padding: 1.5rem;
+  background: rgba(255,255,255,0.95);
+  color: #555;
   font-size: 0.9rem;
-  box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
-}
-
-/* =========================
-   TABLAS (ADMIN)
-========================= */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  background: #1e293b;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-th, td {
-  border: 1px solid #334155;
-  padding: 12px;
-  text-align: left;
-  color: #e5e7eb;
-}
-
-th {
-  background: #111827;
-  font-weight: 600;
-}
-
-/* =========================
-   SELECT
-========================= */
-select {
-  background: #1e293b;
-  color: #e5e7eb;
-  border: 1px solid #334155;
-  padding: 8px;
-  border-radius: 8px;
-}
-
-/* =========================
-   ANIMACIONES
-========================= */
-@keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(15px); }
-  100% { opacity: 1; transform: translateY(0); }
+  margin-top: auto;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
-@media (max-width: 600px) {
-  .video-cards {
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .video-cards, .stats-cards, .quick-cards {
     grid-template-columns: 1fr;
-  }
-
-  .dashboard {
-    padding: 1rem;
-  }
-
-  .navbar h1 {
-    font-size: 1.5rem;
   }
 }
