@@ -1,1 +1,295 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aula Virtual | Admin</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/dashboard-style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>🎓 Aula Virtual</h2>
+      <p id="userRole">Administrador</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('users')">
+        <span class="icon">👥</span> Usuarios
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('roles')">
+        <span class="icon">🛡️</span> Roles
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('courses')">
+        <span class="icon">📚</span> Cursos
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('categories')">
+        <span class="icon">🔖</span> Categorías
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('catalog')">
+        <span class="icon">📁</span> Gestionar Catálogo
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('analytics')">
+        <span class="icon">📈</span> Gráficos de Rendimiento
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('notifications')">
+        <span class="icon">🔔</span> Notificaciones
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h1 id="pageTitle">Dashboard Administrativo</h1>
+      <div class="user-info">
+        <span id="userName">Admin</span>
+        <div class="avatar">👨‍💼</div>
+      </div>
+    </header>
+
+    <div class="content-area" id="contentArea">
+      <!-- Dashboard principal -->
+      <div class="section-content active" id="dashboard">
+        <div class="welcome-banner admin">
+          <h2>👋 Bienvenido, Administrador</h2>
+          <p>Panel de control completo del sistema</p>
+        </div>
+
+        <!-- Métricas Clave -->
+        <section class="metrics-section">
+          <h3>📊 Métricas Clave</h3>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon">👥</div>
+              <div class="metric-info">
+                <h4>33</h4>
+                <p>Usuarios Activos</p>
+                <span class="metric-change positive">+22 nuevos este mes</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">📖</div>
+              <div class="metric-info">
+                <h4>96</h4>
+                <p>Cursos Totales</p>
+                <span class="metric-change">Disponibles</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">👨‍🏫</div>
+              <div class="metric-info">
+                <h4>12</h4>
+                <p>Profesores</p>
+                <span class="metric-change positive">Activos</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">🎯</div>
+              <div class="metric-info">
+                <h4>89%</h4>
+                <p>Tasa de Completado</p>
+                <span class="metric-change positive">+5% vs mes anterior</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Accesos Rápidos Admin -->
+        <section class="quick-access">
+          <h3>⚡ Accesos Rápidos</h3>
+          <div class="quick-grid">
+            <div class="quick-card" onclick="showSection('catalog')">
+              <span class="quick-icon">📁</span>
+              <h4>Gestionar Catálogo</h4>
+              <p>Administra archivos y documentos del sistema</p>
+            </div>
+            <div class="quick-card" onclick="showSection('analytics')">
+              <span class="quick-icon">📈</span>
+              <h4>Gráficos de Rendimiento</h4>
+              <p>Estadísticas y análisis del sistema</p>
+            </div>
+            <div class="quick-card" onclick="showSection('users')">
+              <span class="quick-icon">👥</span>
+              <h4>Gestión de Usuarios</h4>
+              <p>Administra usuarios y permisos</p>
+            </div>
+            <div class="quick-card" onclick="showSection('courses')">
+              <span class="quick-icon">📚</span>
+              <h4>Administrar Cursos</h4>
+              <p>Crea y edita cursos</p>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Sección Usuarios -->
+      <div class="section-content" id="users">
+        <h2>👥 Gestión de Usuarios</h2>
+        <p>Administra los usuarios del sistema</p>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable">
+              <tr><td colspan="5">Cargando usuarios...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Otras secciones -->
+      <div class="section-content" id="roles">
+        <h2>🛡️ Gestión de Roles</h2>
+        <p>Funcionalidad en desarrollo</p>
+      </div>
+
+      <div class="section-content" id="courses">
+        <h2>📚 Administrar Cursos</h2>
+        <p>Funcionalidad en desarrollo</p>
+      </div>
+
+      <div class="section-content" id="categories">
+        <h2>🔖 Categorías</h2>
+        <p>Funcionalidad en desarrollo</p>
+      </div>
+
+      <div class="section-content" id="catalog">
+        <h2>📁 Gestionar Catálogo</h2>
+        <p>Sistema de archivos y documentos</p>
+      </div>
+
+      <div class="section-content" id="analytics">
+        <h2>📈 Gráficos de Rendimiento</h2>
+        <p>Estadísticas del sistema</p>
+      </div>
+
+      <div class="section-content" id="notifications">
+        <h2>🔔 Notificaciones</h2>
+        <p>Centro de notificaciones</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+
+<script>
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+const pageTitle = document.getElementById("pageTitle");
+
+logoutBtn.onclick = async () => {
+  await firebase.auth().signOut();
+  location.href = "index.html";
+};
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (!user) return location.href = "index.html";
+  
+  const db = firebase.firestore();
+  const doc = await db.collection("users").doc(user.uid).get();
+  
+  if (!doc.exists || doc.data().role !== "admin") {
+    alert("Acceso denegado");
+    return location.href = "index.html";
+  }
+
+  userName.textContent = user.displayName || user.email;
+  loadUsers();
+});
+
+function showSection(sectionId) {
+  // Ocultar todas las secciones
+  document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  // Mostrar la sección seleccionada
+  document.getElementById(sectionId).classList.add('active');
+  event.target.closest('.nav-item').classList.add('active');
+  
+  // Actualizar título
+  const titles = {
+    dashboard: 'Dashboard Administrativo',
+    users: 'Gestión de Usuarios',
+    roles: 'Gestión de Roles',
+    courses: 'Administrar Cursos',
+    categories: 'Categorías',
+    catalog: 'Gestionar Catálogo',
+    analytics: 'Gráficos de Rendimiento',
+    notifications: 'Notificaciones'
+  };
+  pageTitle.textContent = titles[sectionId] || 'Dashboard';
+}
+
+async function loadUsers() {
+  const db = firebase.firestore();
+  const usersTable = document.getElementById('usersTable');
+  
+  try {
+    const snapshot = await db.collection("users").get();
+    
+    if (snapshot.empty) {
+      usersTable.innerHTML = '<tr><td colspan="5">No hay usuarios registrados</td></tr>';
+      return;
+    }
+
+    let html = '';
+    snapshot.forEach(doc => {
+      const u = doc.data();
+      const roleEmoji = {admin: '👨‍💼', profesor: '👨‍🏫', alumno: '🧑‍🎓', guest: '👤'};
+      html += `
+        <tr>
+          <td>${roleEmoji[u.role] || '👤'} ${u.name || 'Sin nombre'}</td>
+          <td>${u.email}</td>
+          <td><span class="badge badge-${u.role}">${u.role}</span></td>
+          <td><span class="status-active">Activo</span></td>
+          <td>
+            <button class="btn-sm" onclick="editUser('${doc.id}')">✏️ Editar</button>
+            <button class="btn-sm btn-danger" onclick="deleteUser('${doc.id}')">🗑️</button>
+          </td>
+        </tr>
+      `;
+    });
+    
+    usersTable.innerHTML = html;
+  } catch (err) {
+    console.error(err);
+    usersTable.innerHTML = '<tr><td colspan="5">Error al cargar usuarios</td></tr>';
+  }
+}
+
+function editUser(uid) {
+  alert('Función de edición en desarrollo para usuario: ' + uid);
+}
+
+function deleteUser(uid) {
+  if (confirm('¿Seguro que deseas eliminar este usuario?')) {
+    alert('Función de eliminación en desarrollo');
+  }
+}
+</script>
+
+</body>
+</html>
