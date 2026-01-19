@@ -1,1 +1,202 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aula Virtual | Bienvenido</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/dashboard-style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>🎓 Aula Virtual</h2>
+      <p id="userRole">Invitado</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-item disabled" title="Solo para usuarios registrados">
+        <span class="icon">📚</span> Mis Cursos
+        <span class="badge-lock">🔒</span>
+      </a>
+      <a href="#" class="nav-item disabled" title="Solo para usuarios registrados">
+        <span class="icon">📝</span> Tareas
+        <span class="badge-lock">🔒</span>
+      </a>
+      <a href="#" class="nav-item disabled" title="Solo para usuarios registrados">
+        <span class="icon">🔔</span> Notificaciones
+        <span class="badge-lock">🔒</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h1>Bienvenido</h1>
+      <div class="user-info">
+        <span id="userName">Usuario Invitado</span>
+        <div class="avatar">👤</div>
+      </div>
+    </header>
+
+    <div class="content-area" id="contentArea">
+      <div class="welcome-banner">
+        <h2>👋 ¡Hola! Estás en modo Invitado</h2>
+        <p>Puedes explorar la plataforma, pero con acceso limitado. Para obtener acceso completo, contacta al administrador.</p>
+      </div>
+
+      <!-- Métricas -->
+      <section class="metrics-section">
+        <h3>📊 Métricas Generales</h3>
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon">👥</div>
+            <div class="metric-info">
+              <h4>33</h4>
+              <p>Usuarios Activos</p>
+              <span class="metric-change">+22 nuevos</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">📖</div>
+            <div class="metric-info">
+              <h4>96</h4>
+              <p>Cursos Disponibles</p>
+              <span class="metric-change">Total</span>
+            </div>
+          </div>
+          <div class="metric-card locked">
+            <div class="metric-icon">📝</div>
+            <div class="metric-info">
+              <h4>🔒</h4>
+              <p>Mis Tareas</p>
+              <span class="metric-change">Requiere registro</span>
+            </div>
+          </div>
+          <div class="metric-card locked">
+            <div class="metric-icon">🎯</div>
+            <div class="metric-info">
+              <h4>🔒</h4>
+              <p>Mi Progreso</p>
+              <span class="metric-change">Requiere registro</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Cursos disponibles (vista previa) -->
+      <section class="courses-section">
+        <h3>📚 Cursos Disponibles (Vista Previa)</h3>
+        <div class="courses-grid">
+          <div class="course-card preview">
+            <div class="course-header">
+              <span class="course-icon">💻</span>
+              <span class="badge-preview">Vista Previa</span>
+            </div>
+            <h4>Introducción a la Programación</h4>
+            <p>Aprende los fundamentos de la programación</p>
+            <div class="course-footer">
+              <span>12 lecciones</span>
+              <button class="btn-locked">🔒 Requiere registro</button>
+            </div>
+          </div>
+
+          <div class="course-card preview">
+            <div class="course-header">
+              <span class="course-icon">🎨</span>
+              <span class="badge-preview">Vista Previa</span>
+            </div>
+            <h4>Diseño Gráfico</h4>
+            <p>Domina las herramientas de diseño digital</p>
+            <div class="course-footer">
+              <span>8 lecciones</span>
+              <button class="btn-locked">🔒 Requiere registro</button>
+            </div>
+          </div>
+
+          <div class="course-card preview">
+            <div class="course-header">
+              <span class="course-icon">📊</span>
+              <span class="badge-preview">Vista Previa</span>
+            </div>
+            <h4>Análisis de Datos</h4>
+            <p>Aprende a analizar datos con Excel y Python</p>
+            <div class="course-footer">
+              <span>15 lecciones</span>
+              <button class="btn-locked">🔒 Requiere registro</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA para upgrade -->
+      <section class="upgrade-section">
+        <div class="upgrade-card">
+          <h3>🚀 Obtén Acceso Completo</h3>
+          <p>Contacta al administrador para que te asigne un rol y puedas acceder a todas las funcionalidades</p>
+          <ul>
+            <li>✅ Acceso a todos los cursos</li>
+            <li>✅ Seguimiento de tareas y progreso</li>
+            <li>✅ Certificados al completar cursos</li>
+            <li>✅ Interacción con profesores</li>
+          </ul>
+          <button class="btn-primary" onclick="alert('Contacta a admin@aulavirtual.com para solicitar acceso')">
+            Solicitar Acceso
+          </button>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+
+<script>
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+
+logoutBtn.onclick = async () => {
+  await firebase.auth().signOut();
+  location.href = "index.html";
+};
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (!user) return location.href = "index.html";
+  
+  userName.textContent = user.displayName || user.email;
+
+  // Verificar que sea invitado
+  const db = firebase.firestore();
+  const doc = await db.collection("users").doc(user.uid).get();
+  
+  if (doc.exists && doc.data().role !== "guest") {
+    // Si tiene otro rol, redirigir
+    const role = doc.data().role;
+    if (role === "admin") location.href = "admin.html";
+    else if (role === "profesor") location.href = "profesor.html";
+    else if (role === "alumno") location.href = "dashboard.html";
+  }
+});
+
+function showSection(section) {
+  // Función para futuras secciones
+  console.log("Mostrando sección:", section);
+}
+</script>
+
+</body>
+</html>
