@@ -1,1 +1,263 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Aula Virtual | Profesor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/dashboard-style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>🎓 Aula Virtual</h2>
+      <p id="userRole">Profesor</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('courses')">
+        <span class="icon">📚</span> Mis Cursos
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('planning')">
+        <span class="icon">📅</span> Planificar Clases
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('students')">
+        <span class="icon">👥</span> Alumnos
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('enrollments')">
+        <span class="icon">📝</span> Matrículas
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('exams')">
+        <span class="icon">📋</span> Exámenes
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('notifications')">
+        <span class="icon">🔔</span> Notificaciones
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h1 id="pageTitle">Mi Dashboard</h1>
+      <div class="user-info">
+        <span id="userName">Profesor</span>
+        <div class="avatar">👨‍🏫</div>
+      </div>
+    </header>
+
+    <div class="content-area" id="contentArea">
+      <!-- Dashboard principal -->
+      <div class="section-content active" id="dashboard">
+        <div class="welcome-banner profesor">
+          <h2>👋 Bienvenido, Profesor</h2>
+          <p>Gestiona tus cursos y alumnos</p>
+        </div>
+
+        <!-- Métricas del profesor -->
+        <section class="metrics-section">
+          <h3>📊 Mis Métricas</h3>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon">📚</div>
+              <div class="metric-info">
+                <h4>8</h4>
+                <p>Cursos Activos</p>
+                <span class="metric-change">A mi cargo</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">👥</div>
+              <div class="metric-info">
+                <h4>124</h4>
+                <p>Alumnos</p>
+                <span class="metric-change positive">+12 este mes</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">📝</div>
+              <div class="metric-info">
+                <h4>23</h4>
+                <p>Tareas Pendientes</p>
+                <span class="metric-change">Por revisar</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">⭐</div>
+              <div class="metric-info">
+                <h4>4.8</h4>
+                <p>Calificación Promedio</p>
+                <span class="metric-change positive">Excelente</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Accesos Rápidos -->
+        <section class="quick-access">
+          <h3>⚡ Accesos Rápidos</h3>
+          <div class="quick-grid">
+            <div class="quick-card" onclick="showSection('planning')">
+              <span class="quick-icon">📅</span>
+              <h4>Planificar Clases</h4>
+              <p>Administra tus cursos y horarios</p>
+            </div>
+            <div class="quick-card" onclick="showSection('students')">
+              <span class="quick-icon">👥</span>
+              <h4>Mis Alumnos</h4>
+              <p>Lista y progreso de estudiantes</p>
+            </div>
+            <div class="quick-card" onclick="showSection('exams')">
+              <span class="quick-icon">📋</span>
+              <h4>Crear Examen</h4>
+              <p>Evaluaciones y calificaciones</p>
+            </div>
+            <div class="quick-card">
+              <span class="quick-icon">📊</span>
+              <h4>Estadísticas</h4>
+              <p>Rendimiento de tus cursos</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Cursos recientes -->
+        <section class="courses-section">
+          <h3>📚 Mis Cursos Recientes</h3>
+          <div class="courses-grid">
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-icon">💻</span>
+                <span class="badge-active">Activo</span>
+              </div>
+              <h4>Programación Web</h4>
+              <p>45 alumnos inscritos</p>
+              <div class="course-footer">
+                <span>Próxima clase: Lunes 10:00</span>
+                <button class="btn-primary-sm">Ver Curso</button>
+              </div>
+            </div>
+
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-icon">🎨</span>
+                <span class="badge-active">Activo</span>
+              </div>
+              <h4>Diseño UI/UX</h4>
+              <p>32 alumnos inscritos</p>
+              <div class="course-footer">
+                <span>Próxima clase: Martes 14:00</span>
+                <button class="btn-primary-sm">Ver Curso</button>
+              </div>
+            </div>
+
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-icon">📊</span>
+                <span class="badge-active">Activo</span>
+              </div>
+              <h4>Análisis de Datos</h4>
+              <p>28 alumnos inscritos</p>
+              <div class="course-footer">
+                <span>Próxima clase: Miércoles 16:00</span>
+                <button class="btn-primary-sm">Ver Curso</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Otras secciones -->
+      <div class="section-content" id="courses">
+        <h2>📚 Mis Cursos</h2>
+        <p>Lista completa de cursos a tu cargo</p>
+      </div>
+
+      <div class="section-content" id="planning">
+        <h2>📅 Planificar Clases</h2>
+        <p>Calendario y planificación de clases</p>
+      </div>
+
+      <div class="section-content" id="students">
+        <h2>👥 Mis Alumnos</h2>
+        <p>Gestión de estudiantes</p>
+      </div>
+
+      <div class="section-content" id="enrollments">
+        <h2>📝 Matrículas</h2>
+        <p>Gestión de inscripciones</p>
+      </div>
+
+      <div class="section-content" id="exams">
+        <h2>📋 Exámenes</h2>
+        <p>Crear y gestionar evaluaciones</p>
+      </div>
+
+      <div class="section-content" id="notifications">
+        <h2>🔔 Notificaciones</h2>
+        <p>Centro de notificaciones</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+
+<script>
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+const pageTitle = document.getElementById("pageTitle");
+
+logoutBtn.onclick = async () => {
+  await firebase.auth().signOut();
+  location.href = "index.html";
+};
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (!user) return location.href = "index.html";
+  
+  const db = firebase.firestore();
+  const doc = await db.collection("users").doc(user.uid).get();
+  
+  if (!doc.exists || doc.data().role !== "profesor") {
+    alert("Acceso denegado");
+    return location.href = "index.html";
+  }
+
+  userName.textContent = user.displayName || user.email;
+});
+
+function showSection(sectionId) {
+  document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  document.getElementById(sectionId).classList.add('active');
+  event.target.closest('.nav-item').classList.add('active');
+  
+  const titles = {
+    dashboard: 'Mi Dashboard',
+    courses: 'Mis Cursos',
+    planning: 'Planificar Clases',
+    students: 'Mis Alumnos',
+    enrollments: 'Matrículas',
+    exams: 'Exámenes',
+    notifications: 'Notificaciones'
+  };
+  pageTitle.textContent = titles[sectionId] || 'Dashboard';
+}
+</script>
+
+</body>
+</html>
