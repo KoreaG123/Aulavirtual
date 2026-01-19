@@ -7,43 +7,27 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- NAVBAR -->
-  <header class="navbar">
-    <h1>🎓 Aula Virtual</h1>
-    <button id="logoutBtn">Cerrar sesión</button>
-  </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="container">
-    <div id="content">
-      <p class="loading">⏳ Verificando sesión...</p>
-    </div>
-  </main>
+<header class="navbar">
+  <h1>🎓 Aula Virtual</h1>
+  <button id="logoutBtn">Cerrar sesión</button>
+</header>
 
-  <!-- FOOTER -->
-  <footer>
-    <p>© 2026 Aula Virtual. Todos los derechos reservados.</p>
-  </footer>
+<main class="container">
+  <div id="content">
+    <p class="loading">⏳ Verificando sesión...</p>
+  </div>
+</main>
 
-  <!-- FIREBASE -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<footer>
+  <p>© 2026 Aula Virtual. Todos los derechos reservados.</p>
+</footer>
 
-  <script>
-    // Configuración Firebase (reemplaza con tus credenciales)
-    const firebaseConfig = {
-      apiKey: "TU_API_KEY",
-      authDomain: "TU_AUTH_DOMAIN",
-      projectId: "TU_PROJECT_ID",
-      storageBucket: "TU_STORAGE_BUCKET",
-      messagingSenderId: "TU_MESSAGING_SENDER_ID",
-      appId: "TU_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-  </script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="js/firebase.js"></script>
+<script src="js/dashboard.js"></script>
 
-  <!-- DASHBOARD JS -->
-  <script src="js/dashboard.js"></script>
 </body>
 </html>
