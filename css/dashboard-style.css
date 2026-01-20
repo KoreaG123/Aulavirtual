@@ -170,9 +170,11 @@ body {
   flex: 1;
 }
 
-/* BOTÓN HAMBURGUESA (solo móvil) */
+/* BOTÓN HAMBURGUESA (visible siempre) */
 .menu-toggle {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   position: fixed;
   top: 1rem;
   left: 1rem;
@@ -186,6 +188,12 @@ body {
   cursor: pointer;
   font-size: 1.5rem;
   box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+.menu-toggle:hover {
+  background: var(--primary-dark);
+  transform: scale(1.05);
 }
 
 /* OVERLAY para móvil */
@@ -603,13 +611,6 @@ body {
 
   .sidebar.active {
     transform: translateX(0);
-  }
-
-  /* Mostrar botón hamburguesa */
-  .menu-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
   /* Mostrar overlay cuando sidebar está abierto */
