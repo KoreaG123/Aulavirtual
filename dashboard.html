@@ -4,30 +4,401 @@
   <meta charset="UTF-8">
   <title>Aula Virtual | Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard-style.css">
 </head>
 <body>
 
-<header class="navbar">
-  <h1>🎓 Aula Virtual</h1>
-  <button id="logoutBtn">Cerrar sesión</button>
-</header>
+<!-- Botón hamburguesa -->
+<button class="menu-toggle" id="menuToggle">☰</button>
 
-<main class="container">
-  <div id="content">
-    <p class="loading">⏳ Verificando sesión...</p>
-  </div>
-</main>
+<!-- Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<footer>
-  <p>© 2026 Aula Virtual. Todos los derechos reservados.</p>
-</footer>
+<div class="dashboard-container">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>🎓 Aula Virtual</h2>
+      <p id="userRole">Alumno</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" onclick="showSection('dashboard')">
+        <span class="icon">📊</span> Dashboard
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('courses')">
+        <span class="icon">📚</span> Mis Cursos
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('tasks')">
+        <span class="icon">📝</span> Tareas Pendientes
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('grades')">
+        <span class="icon">⭐</span> Calificaciones
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('schedule')">
+        <span class="icon">📅</span> Horario
+      </a>
+      <a href="#" class="nav-item" onclick="showSection('notifications')">
+        <span class="icon">🔔</span> Notificaciones
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button id="logoutBtn" class="logout-btn">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="top-bar">
+      <h1 id="pageTitle">Mi Dashboard</h1>
+      <div class="user-info">
+        <span id="userName">Alumno</span>
+        <div class="avatar">🧑‍🎓</div>
+      </div>
+    </header>
+
+    <div class="content-area" id="contentArea">
+      <!-- Dashboard principal -->
+      <div class="section-content active" id="dashboard">
+        <div class="welcome-banner">
+          <h2>👋 Bienvenido, <span id="welcomeName">Alumno</span></h2>
+          <p>Tu progreso académico</p>
+        </div>
+
+        <!-- Métricas del alumno -->
+        <section class="metrics-section">
+          <h3>📊 Métricas Clave</h3>
+          <div class="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-icon">📚</div>
+              <div class="metric-info">
+                <h4>6</h4>
+                <p>Cursos Activos</p>
+                <span class="metric-change">Inscritos</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">📝</div>
+              <div class="metric-info">
+                <h4>8</h4>
+                <p>Tareas Pendientes</p>
+                <span class="metric-change">Por entregar</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">⭐</div>
+              <div class="metric-info">
+                <h4>8.5</h4>
+                <p>Promedio General</p>
+                <span class="metric-change positive">Excelente</span>
+              </div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-icon">🎯</div>
+              <div class="metric-info">
+                <h4>75%</h4>
+                <p>Progreso Total</p>
+                <span class="metric-change positive">En curso</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Accesos Rápidos -->
+        <section class="quick-access">
+          <h3>⚡ Accesos Rápidos</h3>
+          <div class="quick-grid">
+            <div class="quick-card" onclick="showSection('courses')">
+              <span class="quick-icon">📚</span>
+              <h4>Mis Cursos</h4>
+              <p>Accede a tus cursos inscritos</p>
+            </div>
+            <div class="quick-card" onclick="showSection('tasks')">
+              <span class="quick-icon">📝</span>
+              <h4>Tareas Pendientes</h4>
+              <p>Revisa y entrega tareas</p>
+            </div>
+            <div class="quick-card" onclick="showSection('grades')">
+              <span class="quick-icon">⭐</span>
+              <h4>Ver Calificaciones</h4>
+              <p>Consulta tus notas</p>
+            </div>
+            <div class="quick-card" onclick="showSection('schedule')">
+              <span class="quick-icon">📅</span>
+              <h4>Mi Horario</h4>
+              <p>Calendario de clases</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Mis cursos -->
+        <section class="courses-section">
+          <h3>📚 Cursos en Progreso</h3>
+          <div class="courses-grid">
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-icon">💻</span>
+                <span class="badge-active">En curso</span>
+              </div>
+              <h4>Programación Web</h4>
+              <p>Módulo 3: JavaScript Avanzado</p>
+              <div class="course-footer">
+                <span>Progreso: 65%</span>
+                <button class="btn-primary-sm">Continuar</button>
+              </div>
+            </div>
+
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-icon">🎨</span>
+                <span class="badge-active">En curso</span>
+              </div>
+              <h4>Diseño UI/UX</h4>
+              <p>Módulo 2: Prototipado</p>
+              <div class="course-footer">
+                <span>Progreso: 45%</span>
+                <button class="btn-primary-sm">Continuar</button>
+              </div>
+            </div>
+
+            <div class="course-card">
+              <div class="course-header">
+                <span class="course-icon">📊</span>
+                <span class="badge-active">En curso</span>
+              </div>
+              <h4>Análisis de Datos</h4>
+              <p>Módulo 1: Excel Avanzado</p>
+              <div class="course-footer">
+                <span>Progreso: 80%</span>
+                <button class="btn-primary-sm">Continuar</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tareas próximas -->
+        <section class="tasks-section">
+          <h3>📝 Próximas Entregas</h3>
+          <div class="tasks-list">
+            <div class="task-item urgent">
+              <div class="task-icon">⚠️</div>
+              <div class="task-info">
+                <h4>Proyecto Final - Programación Web</h4>
+                <p>Vence: Mañana 23:59</p>
+              </div>
+              <button class="btn-primary-sm">Ver</button>
+            </div>
+
+            <div class="task-item">
+              <div class="task-icon">📄</div>
+              <div class="task-info">
+                <h4>Prototipo de App - Diseño UI/UX</h4>
+                <p>Vence: En 3 días</p>
+              </div>
+              <button class="btn-primary-sm">Ver</button>
+            </div>
+
+            <div class="task-item">
+              <div class="task-icon">📊</div>
+              <div class="task-info">
+                <h4>Análisis de Ventas - Excel</h4>
+                <p>Vence: En 5 días</p>
+              </div>
+              <button class="btn-primary-sm">Ver</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Sección Mis Cursos -->
+      <div class="section-content" id="courses">
+        <h2>📚 Mis Cursos</h2>
+        <p>Todos tus cursos inscritos</p>
+      </div>
+
+      <!-- Sección Tareas -->
+      <div class="section-content" id="tasks">
+        <h2>📝 Tareas Pendientes</h2>
+        <p>Lista completa de tareas</p>
+      </div>
+
+      <!-- Sección Calificaciones -->
+      <div class="section-content" id="grades">
+        <h2>⭐ Mis Calificaciones</h2>
+        <p>Historial de notas</p>
+      </div>
+
+      <!-- Sección Horario -->
+      <div class="section-content" id="schedule">
+        <h2>📅 Mi Horario</h2>
+        <p>Calendario de clases</p>
+      </div>
+
+      <!-- Sección Notificaciones -->
+      <div class="section-content" id="notifications">
+        <h2>🔔 Notificaciones</h2>
+        <p>Centro de notificaciones</p>
+      </div>
+    </div>
+  </main>
+</div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="js/firebase.js"></script>
-<script src="js/dashboard.js"></script>
+
+<script>
+// ===== CONTROL MENÚ MÓVIL =====
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.querySelector('.sidebar');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+if (menuToggle && sidebar && sidebarOverlay) {
+  menuToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    sidebarOverlay.classList.toggle('active');
+  });
+
+  sidebarOverlay.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    sidebarOverlay.classList.remove('active');
+  });
+
+  const navItems = document.querySelectorAll('.nav-item');
+  navItems.forEach(item => {
+    item.addEventListener('click', () => {
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
+      }
+    });
+  });
+}
+
+// ===== FIREBASE AUTH =====
+const logoutBtn = document.getElementById("logoutBtn");
+const userName = document.getElementById("userName");
+const welcomeName = document.getElementById("welcomeName");
+const pageTitle = document.getElementById("pageTitle");
+
+logoutBtn.onclick = async () => {
+  await firebase.auth().signOut();
+  location.href = "index.html";
+};
+
+firebase.auth().onAuthStateChanged(async user => {
+  if (!user) return location.href = "index.html";
+  
+  const db = firebase.firestore();
+  const doc = await db.collection("users").doc(user.uid).get();
+  
+  if (!doc.exists || doc.data().role !== "alumno") {
+    alert("Acceso denegado");
+    return location.href = "index.html";
+  }
+
+  const displayName = user.displayName || doc.data().name || user.email;
+  userName.textContent = displayName;
+  welcomeName.textContent = displayName;
+});
+
+function showSection(sectionId) {
+  document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  document.getElementById(sectionId).classList.add('active');
+  event.target.closest('.nav-item').classList.add('active');
+  
+  const titles = {
+    dashboard: 'Mi Dashboard',
+    courses: 'Mis Cursos',
+    tasks: 'Tareas Pendientes',
+    grades: 'Mis Calificaciones',
+    schedule: 'Mi Horario',
+    notifications: 'Notificaciones'
+  };
+  pageTitle.textContent = titles[sectionId] || 'Dashboard';
+}
+</script>
+
+<style>
+/* Estilos adicionales para tareas */
+.tasks-section {
+  margin-top: 2rem;
+}
+
+.tasks-section h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.task-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s;
+}
+
+.task-item:hover {
+  transform: translateX(5px);
+  border-color: var(--primary);
+}
+
+.task-item.urgent {
+  border-left: 4px solid var(--danger);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.task-icon {
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(37, 99, 235, 0.1);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.task-info {
+  flex: 1;
+}
+
+.task-info h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: var(--text-primary);
+}
+
+.task-info p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+  .task-item {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .task-info {
+    width: 100%;
+  }
+}
+</style>
 
 </body>
 </html>
